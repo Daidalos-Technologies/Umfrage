@@ -1,3 +1,10 @@
+<?php
+
+require "init.php";
+
+
+?>
+
 <html>
 
 <head>

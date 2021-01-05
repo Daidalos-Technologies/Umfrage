@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cd6c327f-c6b3-44e5-937c-21d87b791975" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Neuer Ordner/index.css" afterDir="false" />
-    </list>
+    <list default="true" id="cd6c327f-c6b3-44e5-937c-21d87b791975" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,6 +20,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1mbl4HDOhdSN8tP10Mm491HHm0C" />
   <component name="ProjectViewState">
@@ -48,6 +54,7 @@
       <updated>1609769980635</updated>
       <workItem from="1609769982217" duration="885000" />
       <workItem from="1609770954628" duration="850000" />
+      <workItem from="1609838881263" duration="4256000" />
     </task>
     <servers />
   </component>
@@ -64,5 +71,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
