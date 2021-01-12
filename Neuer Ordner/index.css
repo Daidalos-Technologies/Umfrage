@@ -10,3 +10,33 @@ header
     padding: 0 15%;
     margin-top: 5rem;
 }
+
+.questions {
+    height: 40vh;
+    width: 100%;
+    overflow: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none; /* IE 10+ */
+    padding: 10px 50px;
+
+}
+
+.questions::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+}
+
+.question-preview {
+    text-align: center;
+    height: 75px;
+    margin: 25px 0px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px gray;
+}
+
+.welcome-text {
+    font-family: 'Roboto', sans-serif;
+    margin: 5% 20%;
+    padding: 50px;
+    box-shadow: 0 0 10px gray;
+    border-radius: 5px;
+}

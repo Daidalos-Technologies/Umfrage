@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cd6c327f-c6b3-44e5-937c-21d87b791975" name="Default Changelist" comment="" />
+    <list default="true" id="cd6c327f-c6b3-44e5-937c-21d87b791975" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Neuer Ordner/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/Neuer Ordner/admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/Neuer Ordner/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/init.php" beforeDir="false" afterPath="$PROJECT_DIR$/Neuer Ordner/init.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/umfrage.php" beforeDir="false" afterPath="$PROJECT_DIR$/Neuer Ordner/umfrage.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,6 +48,12 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -55,6 +68,8 @@
       <workItem from="1609769982217" duration="885000" />
       <workItem from="1609770954628" duration="850000" />
       <workItem from="1609838881263" duration="4256000" />
+      <workItem from="1609931363371" duration="4861000" />
+      <workItem from="1610444908896" duration="7008000" />
     </task>
     <servers />
   </component>

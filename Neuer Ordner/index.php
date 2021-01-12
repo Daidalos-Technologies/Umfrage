@@ -1,0 +1,40 @@
+<?php
+require "init.php";
+
+?>
+
+<html>
+
+<head>
+    <title>Umfrage | Kryptowährung</title>
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<header></header>
+
+<div class="container">
+    <div class="welcome-text">
+        <p class="welcome-text-content">
+        Guten Tag,<br><br>
+        wir sind eine Gruppe von fünf Schülern in der 11. Klasse der Staatlichen Gemeinschaftsschule Jenaplan in Weimar und müssen, im Rahmen der Oberstufe, eine Seminarfacharbeit, also eine erste wissenschaftliche Arbeit, ablegen.<br><br>
+        In unserer Arbeit beschäftigen wir uns mit dem Thema “Kryptowährung” und ob es möglich ist, eine “konventionelle Währung” durch eine Kryptowährung zu ersetzen.<br><br>
+        Mit Hilfe dieses Fragebogens möchten wir Ihre Meinung zu dem Thema “Kryptowährung” erfragen.<br><br>
+        Damit unsere Umfrage repräsentativ werden kann, müssen wir Sie in den ersten Fragen nach ein paar persönlichen Daten fragen. Wir wären Ihnen sehr verbunden, wenn Sie uns diese Informationen nicht vorenthalten würden.<br><br>
+        Falls Sie Fragen haben, dann erreichen uns unter der unten stehenden E-Mail-Adresse.<br><br>
+        Vielen Dank, dass Sie sich Zeit nehmen, diesen Fragebogen auszufüllen und uns damit bei unserer Arbeit zu unterstützen.<br><br>
+        </p>
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <a class="btn btn-primary" href="./umfrage.php">Teilnehmen</a>
+            <a class="btn btn-secondary" href="mailto:semiarbeitkryptowaehrung@gmail.com">Kontakt</a>
+        </div>
+
+    </div>
+</div>
+</body>
+
+</html>
