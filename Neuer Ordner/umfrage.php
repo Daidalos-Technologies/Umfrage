@@ -65,13 +65,10 @@ $poll_answers = explode("#", $poll["answers"]);
                     <form class="answers mt-5 text-left" method="post" action="./umfrage.php">
                         <input hidden name="poll_id" value="<?php echo $poll["id"]; ?>">
                         <select class="form-select" aria-label="Default select example" name="answer">
+                            <option value="" disabled selected="">---</option>
                             <?php $counter = 0;
                             foreach ($poll_answers as $answer): $counter++; ?>
-                                <?php if ($counter === 1): ?>
-                                    <option value="<?php echo $answer; ?>" selected><?php echo $answer; ?></option>
-                                <?php else: ?>
-                                    <option value="<?php echo $answer; ?>"><?php echo $answer; ?></option>
-                                <?php endif; ?>
+                                <option value="<?php echo $answer; ?>"><?php echo $answer; ?></option>
                             <?php endforeach; ?>
                         </select>
                         <button type="submit" class="btn btn-primary mt-4">Weiter</button>
