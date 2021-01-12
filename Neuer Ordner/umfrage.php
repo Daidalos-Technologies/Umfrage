@@ -36,7 +36,12 @@ if (isset($_POST["poll_id"])) {
     $poll = fetch_by_position(1);
 }
 
-$poll_answers = explode("#", $poll["answers"]);
+if($poll["answers"] === "self-filling") {
+    $poll_answers = "self-filling";
+}else {
+    $poll_answers = explode("#", $poll["answers"]);
+}
+
 
 
 ?>
@@ -67,6 +72,9 @@ $poll_answers = explode("#", $poll["answers"]);
                     <form class="answers mt-5 text-left" method="post" id="form" action="./umfrage.php">
                         <input hidden name="poll_id" value="<?php echo $poll["id"]; ?>">
                         <input hidden name="skip" id="skip_inp">
+                        <?php if($poll_answers === "self-filling"): ?>
+                            <input name="answer" class="form-control" required>
+                        <?php else: ?>
                         <select class="form-select" aria-label="Default select example" name="answer">
                             <option value="" disabled selected="">---</option>
                             <?php $counter = 0;
@@ -74,6 +82,7 @@ $poll_answers = explode("#", $poll["answers"]);
                                 <option value="<?php echo $answer; ?>"><?php echo $answer; ?></option>
                             <?php endforeach; ?>
                         </select>
+                        <?php endif; ?>
                         <?php if ($poll["optional"] == 1): ?>
                             <div class="d-flex justify-content-between align-items-center mt-4">
                                 <button type="button" class="btn btn-secondary" id="skip">Überspringen</button>
