@@ -38,6 +38,21 @@ try {
 
     }
 
+    function fetch_result_by_user_id($user_id, $poll_id)
+    {
+        global $pdo;
+        $statement = $pdo->prepare("SELECT * FROM results WHERE user_id = :user_id AND poll_id = :poll_id ");
+        $statement->execute(array("user_id" => $user_id, "poll_id" => $poll_id));
+        return $statement->fetch();
+    }
+
+    function update_result($user_id, $poll_id, $answer)
+    {
+        global $pdo;
+        $statement = $pdo->prepare("UPDATE results SET answer = :answer WHERE user_id = :user_id AND poll_id = :poll_id");
+        $statement->execute(array("answer" => $answer, "user_id" => $user_id, "poll_id" => $poll_id));
+    }
+
 } catch (PDOException $e) {
     print "Error!: " . $e->getMessage() . "<br/>";
     die();

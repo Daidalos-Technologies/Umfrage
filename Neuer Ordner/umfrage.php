@@ -13,7 +13,15 @@ if(isset($_POST["poll_id"]))
 $old_poll = fetch_by_id($_POST["poll_id"]);
 $old_position = $old_poll["position"];
 
-add_result($_SESSION["result_id"], $old_poll["id"], $_POST["answer"]);
+$result = fetch_result_by_user_id($_SESSION["result_id"], $old_poll["id"]);
+
+if($result == false) {
+    add_result($_SESSION["result_id"], $old_poll["id"], $_POST["answer"]);
+}else {
+    update_result($_SESSION["result_id"], $old_poll["id"], $_POST["answer"]);
+}
+
+
 if($old_poll["jump"] === 0) {
     $next_poll = $old_poll["jump_to"];
 }else {
