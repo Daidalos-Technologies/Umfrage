@@ -10,10 +10,10 @@ require "init.php";
 
 if(isset($_POST["poll_id"]))
 {
-
-    
-
 $old_poll = fetch_by_id($_POST["poll_id"]);
+$old_position = $old_poll["position"];
+
+add_result($_SESSION["result_id"], $old_poll["id"], $_POST["answer"]);
 if($old_poll["jump"] === 0) {
     $next_poll = $old_poll["jump_to"];
 }else {

@@ -30,6 +30,14 @@ try {
         return $statement->fetch();
     }
 
+    function add_result($user_id, $poll_id, $answer)
+    {
+        global $pdo;
+        $statement = $pdo->prepare("INSERT INTO results (user_id, poll_id, answer) VALUES (?, ?, ?)");
+        $statement->execute(array($user_id, $poll_id, $answer));
+
+    }
+
 } catch (PDOException $e) {
     print "Error!: " . $e->getMessage() . "<br/>";
     die();
