@@ -66,9 +66,14 @@ $poll_answers = explode("#", $poll["answers"]);
                     <p class="card-text"><?php echo $poll["content"]; ?></p>
                     <form class="answers mt-5 text-left" method="post" id="form" action="./umfrage.php">
                         <input hidden name="poll_id" value="<?php echo $poll["id"]; ?>">
+<<<<<<< Updated upstream
                         <input hidden name="skip" id="skip_inp">
                         <select class="form-select" aria-label="Default select example" name="answer" required>
                             <option disabled selected hidden style="background-color: grey !important">---</option> <!-- TODO: add grey background-color -->
+=======
+                        <select class="form-select" aria-label="Default select example" name="answer">
+                            <option disabled selected hidden> --- </option> <!-- TODO: add grey background-color -->
+>>>>>>> Stashed changes
                             <?php $counter = 0;
                             foreach ($poll_answers as $answer): $counter++; ?>
                                 <option value="<?php echo $answer; ?>"><?php echo $answer; ?></option>
