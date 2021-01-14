@@ -122,6 +122,9 @@ if($poll["answers"] === "self-filling") {
                         <select class="form-select" aria-label="Default select example" name="answer" required>
                             <option disabled selected hidden style="background-color: grey !important">---</option> <!-- TODO: add grey background-color -->
                             <?php $counter = 0;
+                            if(empty($poll_answers[count($poll_answers)-1])) {
+                                unset($poll_answers[count($poll_answers)-1]);
+                            }
                             foreach ($poll_answers as $answer): $counter++; ?>
                                 <option value="<?php echo $answer; ?>"><?php echo $answer; ?></option>
                             <?php endforeach; ?>
