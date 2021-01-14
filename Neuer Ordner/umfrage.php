@@ -121,6 +121,9 @@ if($poll["answers"] === "self-filling") {
                         <?php elseif ($poll["multiple_choice"] != 1): ?>
                         <select class="form-select" aria-label="Default select example" name="answer" required>
                             <option value="" disabled selected="">---</option>
+                        <?php else: ?>
+                        <select class="form-select" aria-label="Default select example" name="answer" required>
+                            <option disabled selected hidden style="background-color: grey !important">---</option> <!-- TODO: add grey background-color -->
                             <?php $counter = 0;
                             foreach ($poll_answers as $answer): $counter++; ?>
                                 <option value="<?php echo $answer; ?>"><?php echo $answer; ?></option>
