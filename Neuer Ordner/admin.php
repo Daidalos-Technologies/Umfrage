@@ -7,6 +7,9 @@ if (isset($_POST["answers-amount"])) {
     $position = $_POST["position"];
     $jump_to = $_POST["jump_to"];
     $optional = $_POST["optional"];
+    $multiple = $_POST["multiple"];
+    $jump_on = $_POST["jump_on"];
+
 
 
     $answers_amount = $_POST["answers-amount"];
@@ -24,11 +27,11 @@ if (isset($_POST["answers-amount"])) {
 
 
     if ($jump_to !== 0) {
-        $statement = $pdo->prepare("INSERT INTO poll (title, content, answers, position, jump, jump_to, optional) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $statement->execute(array($title, $content, $answers_db, $position, 1, $jump_to, $optional));
+        $statement = $pdo->prepare("INSERT INTO poll (title, content, answers, position, jump, jump_to, optional, multiple_choice, jump_on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $statement->execute(array($title, $content, $answers_db, $position, 1, $jump_to, $optional, $multiple, $jump_on));
     } else {
-        $statement = $pdo->prepare("INSERT INTO poll (title, content, answers, position, optional) VALUES (?, ?, ?, ?, ?)");
-        $statement->execute(array($title, $content, $answers_db, $position, $optional));
+        $statement = $pdo->prepare("INSERT INTO poll (title, content, answers, position, optional, multiple_choice, jump_on) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $statement->execute(array($title, $content, $answers_db, $position, $optional, $multiple, $jump_on));
     }
 
 
@@ -74,8 +77,16 @@ $questions = fetch_all("poll");
             <input type="number" name="jump_to" id="jump_to" class="form-control" value="0" required>
         </div>
         <div class="mb-3">
+            <label for="jump_on" class="form-label">Jump_On *</label>
+            <input type="number" name="jump_on" id="jump_on" class="form-control" value="0" required>
+        </div>
+        <div class="mb-3">
             <label for="optional" class="form-label">Optional *</label>
             <input type="number" name="optional" id="optional" class="form-control" value="0" required>
+        </div>
+        <div class="mb-3">
+            <label for="multiple" class="form-label">Multiple *</label>
+            <input type="number" name="multiple" id="multiple" class="form-control" value="0" required>
         </div>
         <div class="answers">
             <input hidden id="answers-amount" name="answers-amount" value="1">

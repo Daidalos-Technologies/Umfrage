@@ -2,7 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd6c327f-c6b3-44e5-937c-21d87b791975" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Neuer Ordner/delete_cookie.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Neuer Ordner/finish.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Neuer Ordner/header.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Neuer Ordner/img/bitcoin-vs-litecoin-vs-ethereum.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Neuer Ordner/img/cryptocurrencies.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Neuer Ordner/loading.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Neuer Ordner/loading.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/Neuer Ordner/admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/Neuer Ordner/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/Neuer Ordner/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/init.php" beforeDir="false" afterPath="$PROJECT_DIR$/Neuer Ordner/init.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Neuer Ordner/umfrage.php" beforeDir="false" afterPath="$PROJECT_DIR$/Neuer Ordner/umfrage.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,6 +28,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="JavaScript File" />
         <option value="CSS File" />
       </list>
     </option>
@@ -33,11 +45,15 @@
     </file-type-list>
   </component>
   <component name="ProjectId" id="1mbl4HDOhdSN8tP10Mm491HHm0C" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -65,7 +81,10 @@
       <workItem from="1609770954628" duration="850000" />
       <workItem from="1609838881263" duration="4256000" />
       <workItem from="1609931363371" duration="4861000" />
-      <workItem from="1610444908896" duration="10791000" />
+      <workItem from="1610444908896" duration="13402000" />
+      <workItem from="1610531324610" duration="4684000" />
+      <workItem from="1610609346814" duration="4521000" />
+      <workItem from="1610618916131" duration="2907000" />
     </task>
     <servers />
   </component>
@@ -83,5 +102,8 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>
