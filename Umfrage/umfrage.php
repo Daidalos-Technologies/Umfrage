@@ -120,9 +120,6 @@ if($poll["answers"] === "self-filling") {
                             <input name="answer" class="form-control" required>
                         <?php elseif ($poll["multiple_choice"] != 1): ?>
                         <select class="form-select" aria-label="Default select example" name="answer" required>
-                            <option value="" disabled selected="">---</option>
-                        <?php else: ?>
-                        <select class="form-select" aria-label="Default select example" name="answer" required>
                             <option disabled selected hidden style="background-color: grey !important">---</option> <!-- TODO: add grey background-color -->
                             <?php $counter = 0;
                             foreach ($poll_answers as $answer): $counter++; ?>
@@ -132,8 +129,12 @@ if($poll["answers"] === "self-filling") {
                         <?php elseif ($poll["multiple_choice"] == 1): ?>
                         <?php
                             $counter = 0;
+                            if(empty($poll_answers[count($poll_answers)-1])) {
+                                unset($poll_answers[count($poll_answers)-1]);
+                            }
                             foreach ($poll_answers as $answer):
                             $counter++;
+
                                 ?>
                                 <div class="form-check text-left">
                                     <input name="answer[]" class="form-check-input" type="checkbox" value="<?php echo $answer; ?>" id="answer-<?php echo $counter; ?>">

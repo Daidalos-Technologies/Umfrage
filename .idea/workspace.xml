@@ -2,7 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd6c327f-c6b3-44e5-937c-21d87b791975" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Neuer Ordner/umfrage.php" beforeDir="false" afterPath="$PROJECT_DIR$/Neuer Ordner/umfrage.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/admin.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/delete_cookie.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/finish.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/header.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/img/bitcoin-vs-litecoin-vs-ethereum.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/img/cryptocurrencies.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/index.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/init.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/loading.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/loading.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Umfrage/umfrage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/admin.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/delete_cookie.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/finish.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/header.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/img/bitcoin-vs-litecoin-vs-ethereum.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/img/cryptocurrencies.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/init.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/loading.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/loading.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neuer Ordner/umfrage.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +96,7 @@
       <workItem from="1610444908896" duration="13402000" />
       <workItem from="1610531324610" duration="4684000" />
       <workItem from="1610609346814" duration="4521000" />
-      <workItem from="1610618916131" duration="3004000" />
+      <workItem from="1610618916131" duration="4185000" />
     </task>
     <servers />
   </component>
