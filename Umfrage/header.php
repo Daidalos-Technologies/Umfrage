@@ -23,6 +23,6 @@
     </nav>
     <div class="title d-flex align-items-center justify-content-center">
         <div class="title-wrapper text-center"><h1>Semi-Arbeit-Kryptowährung</h1>
-            <p>Anton, Leander, Julius Jakob und Shuhib</p></div>
+            <p>Anton, Leander, Julius, Jakob und Shuhib</p></div>
     </div>
 </header>

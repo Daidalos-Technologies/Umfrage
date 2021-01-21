@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd6c327f-c6b3-44e5-937c-21d87b791975" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Umfrage/Entities/Poll.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Umfrage/finish.php" beforeDir="false" afterPath="$PROJECT_DIR$/Umfrage/finish.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Umfrage/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/Umfrage/header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Umfrage/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/Umfrage/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Umfrage/umfrage.php" beforeDir="false" afterPath="$PROJECT_DIR$/Umfrage/umfrage.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,7 +51,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/10a-Kreuzwortraetselwettbewerb" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -55,6 +59,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
     <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -73,7 +78,9 @@
       <workItem from="1610444908896" duration="13402000" />
       <workItem from="1610531324610" duration="4684000" />
       <workItem from="1610609346814" duration="4521000" />
-      <workItem from="1610618916131" duration="4781000" />
+      <workItem from="1610618916131" duration="9361000" />
+      <workItem from="1610704728016" duration="1812000" />
+      <workItem from="1610882426273" duration="842000" />
     </task>
     <servers />
   </component>

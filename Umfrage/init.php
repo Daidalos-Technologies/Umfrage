@@ -19,15 +19,15 @@ try {
     function fetch_all($table)
     {
         global $pdo;
-        $statement = $pdo->prepare("SELECT * FROM $table ORDER BY position");
-        $statement->execute();
+        $statement = $pdo->prepare("SELECT * FROM $table WHERE special = ? ORDER BY position ");
+        $statement->execute(array(0));
         return $statement->fetchAll();
     }
 
     function fetch_by_position($position)
     {
         global $pdo;
-        $statement = $pdo->prepare("SELECT * FROM poll WHERE position = ? ");
+        $statement = $pdo->prepare("SELECT * FROM questions WHERE position = ? ");
         $statement->execute(array($position));
         return $statement->fetch();
     }
@@ -35,10 +35,11 @@ try {
     function fetch_by_id($id)
     {
         global $pdo;
-        $statement = $pdo->prepare("SELECT * FROM poll WHERE id = ? ");
+        $statement = $pdo->prepare("SELECT * FROM questions WHERE id = ? ");
         $statement->execute(array($id));
         return $statement->fetch();
     }
+
 
     function add_result($user_id, $poll_id, $answer)
     {

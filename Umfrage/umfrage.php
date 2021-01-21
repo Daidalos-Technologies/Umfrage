@@ -98,6 +98,7 @@ if($poll["answers"] === "self-filling") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -117,7 +118,7 @@ if($poll["answers"] === "self-filling") {
                         <input hidden name="poll_id" value="<?php echo $poll["id"]; ?>">
                         <input hidden name="skip" id="skip_inp">
                         <?php if($poll_answers === "self-filling"): ?>
-                            <input name="answer" class="form-control" required>
+                            <input name="answer" type="number" class="form-control" required>
                         <?php elseif ($poll["multiple_choice"] != 1): ?>
                         <select class="form-select" aria-label="Default select example" name="answer" required>
                             <option disabled selected hidden style="background-color: grey !important">---</option> <!-- TODO: add grey background-color -->

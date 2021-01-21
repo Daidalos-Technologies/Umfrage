@@ -37,7 +37,7 @@ if (isset($_POST["answers-amount"])) {
 
 }
 
-$questions = fetch_all("poll");
+$questions = fetch_all("questions");
 
 
 ?>
@@ -66,31 +66,24 @@ $questions = fetch_all("poll");
         </div>
         <div class="mb-3">
             <label for="position" class="form-label">Question-Position *</label>
-            <input type="number" name="position" class="form-control" id="position" required>
+            <input type="number" name="position" class="form-control" id="position" value="<?php $last_question = end($questions); echo $last_question["position"] + 1; ?>" required>
         </div>
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Question-Content</label>
             <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="3"></textarea>
         </div>
         <div class="mb-3">
-            <label for="jump_to" class="form-label">Jump_To *</label>
-            <input type="number" name="jump_to" id="jump_to" class="form-control" value="0" required>
-        </div>
-        <div class="mb-3">
-            <label for="jump_on" class="form-label">Jump_On *</label>
-            <input type="number" name="jump_on" id="jump_on" class="form-control" value="0" required>
-        </div>
-        <div class="mb-3">
             <label for="optional" class="form-label">Optional *</label>
-            <input type="number" name="optional" id="optional" class="form-control" value="0" required>
+            <br>
+            <input type="checkbox" name="optional" id="optional">
         </div>
         <div class="mb-3">
-            <label for="multiple" class="form-label">Multiple *</label>
-            <input type="number" name="multiple" id="multiple" class="form-control" value="0" required>
+            <label for="optional" class="form-label">Erschließungsfrage *</label>
+            <br>
+            <input type="checkbox" name="special" id="optional">
         </div>
         <div class="answers">
-            <input hidden id="answers-amount" name="answers-amount" value="1">
-            <input class="form-control" name="answer-1" placeholder="answer-1 *" required>
+            <input hidden id="answers-amount" name="answers-amount" value="0">
         </div>
         <button type="button" class="btn btn-outline-secondary mt-3" id="new_answer">+</button>
         <button type="button" class="btn btn-outline-secondary mt-3" style="display: none" id="delete_new_answer">-
@@ -119,23 +112,62 @@ $questions = fetch_all("poll");
 
 <script type="text/javascript">
 
-    $("#new_answer").click(function () {
+    let answers = [];
+
+    class Answer
+    {
+        constructor(number, next_pos) {
+            this.number = number;
+
+            this.$_answerRow = $("<div />").addClass("row align-items-end").appendTo(".answers");
+            let $_col6 = $("<div />").addClass("col-6").appendTo(this.$_answerRow);
+            let $_col3_2 = $("<div />").addClass("col-3").appendTo(this.$_answerRow);
+            let $_col3 = $("<div />").addClass("col-3").appendTo(this.$_answerRow);
+
+            let $_answer = $("<input />").addClass("form-control").attr({
+                "name": "answer-"+this.number,
+                "placeholder": "answer-"+this.number,
+                "required": true
+            }).appendTo($_col6);
+
+            let $_nextPosition = $("<input />").addClass("form-control").attr({
+                "name": "next-position-"+this.number,
+                "placeholder": "next-question",
+                "required": true,
+                "type": "number"
+            }).val(next_pos+1).appendTo($_col3);
+
+            let $_type = $("<select />").addClass("form-select").attr({
+                "name": "type-"+this.number,
+                "required": true
+            }).append(
+                "<option value='select' selected>Select</option>" +
+                "<option value='self-filling'>Self-Filling</option>" +
+                "<option value='checkbox'>Checkbox</option>"
+            ).appendTo($_col3_2);
+
+
+        }
+
+        delete()
+        {
+            this.$_answerRow.remove()
+        }
+    }
+
+    $("#new_answer").click(() => {
         let answers_amount = parseInt($("#answers-amount").val());
         answers_amount++;
-        console.log(answers_amount);
         $("#answers-amount").val(answers_amount);
         if (answers_amount >= 2) {
             $("#delete_new_answer").fadeIn();
         }
-        let new_answer = $("<input />").addClass("form-control").appendTo(".answers").attr({
-            "placeholder": "answer-" + answers_amount + " *",
-            "name": "answer-" + answers_amount,
-            "required": true
-        });
+        answers.push(new Answer(answers_amount, <?php echo $last_question["position"] + 1;?>));
 
     });
+    $("#new_answer").click();
 
-    $("#delete_new_answer").click(function () {
+    $("#delete_new_answer").click( () => {
         let answers_amount = parseInt($("#answers-amount").val());
         answers_amount--;
         console.log(answers_amount);
@@ -143,7 +175,9 @@ $questions = fetch_all("poll");
             $("#delete_new_answer").fadeOut();
         }
         $("#answers-amount").val(answers_amount);
-        $(".answers input").last().remove();
+        let pos = answers.length - 1;
+       answers[pos].delete();
+       answers.pop();
     })
 </script>
 </body>
