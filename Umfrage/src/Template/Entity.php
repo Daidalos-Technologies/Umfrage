@@ -1,9 +1,13 @@
 <?php
 
 
-class Question implements ArrayAccess
-{
+namespace App\Template;
 
+use ArrayAccess;
+
+
+class Entity implements ArrayAccess
+{
 
     public function offsetExists($offset) {
         return isset($this->$offset);
@@ -20,6 +24,5 @@ class Question implements ArrayAccess
     public function offsetUnset($offset) {
         unset($this->$offset);
     }
-
 
 }
