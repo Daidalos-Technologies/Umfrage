@@ -31,4 +31,12 @@ abstract class Repository
         $res = $stmt->fetchAll(PDO::FETCH_CLASS, "{$this->entity_path}");;
         return $res;
     }
+
+    function find($params)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE {$params[0]}= :placeholder");
+        $stmt->execute(["placeholder" => $params[1]]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
+        return $stmt->fetch(PDO::FETCH_CLASS);
+    }
 }

@@ -15,7 +15,7 @@ $results= fetch_all_by_user_id($_SESSION["result_id"]);
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="public/css/index.css">
     <link rel="stylesheet" href="loading.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>

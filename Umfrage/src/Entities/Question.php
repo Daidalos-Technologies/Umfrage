@@ -14,4 +14,5 @@ class Question extends Entity
        public $optional;
        public $special;
 
+
 }

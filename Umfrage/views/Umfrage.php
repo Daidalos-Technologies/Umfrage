@@ -19,13 +19,14 @@
                     Umfrage - Kryptowährung
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title"></h5>
-                    <p class="card-text"></p>
+                    <h5 class="card-title"><?php echo $question["title"]; ?></h5>
+                    <p class="card-text"><?php echo $question["content"]; ?></p>
                     <form class="answers mt-5 text-left" method="post" id="form" action="./umfrage.php">
-                        <input hidden name="poll_id" value="">
+                        <input hidden name="poll_id" value="<?php echo $question["id"]; ?>">
                         <input hidden name="skip" id="skip_inp">
 
                             <input name="answer" type="number" class="form-control" required>
+
                             <select class="form-select" aria-label="Default select example" name="answer" required>
                                 <option disabled selected hidden style="background-color: grey !important">---</option> <!-- TODO: add grey background-color -->
                                     <option value=""</option>

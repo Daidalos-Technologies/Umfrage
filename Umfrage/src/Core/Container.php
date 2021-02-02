@@ -2,6 +2,10 @@
 
 namespace App\Core;
 
+use PDO;
+use App\Controller\PollController as PollController;
+use App\Repositories\QuestionRepository as QuestionRepository;
+use App\Controller\AdminController as AdminController;
 class Container
 {
 
@@ -15,7 +19,7 @@ class Container
                 'pdo' => function () {
                     try {
                         $pdo = new PDO(
-                            'mysql:host=antondereroberer.lima-db.de;dbname=db_390976_12;charset=utf8',
+                            'mysql:host=antondereroberer.lima-db.de;dbname=db_390976_15;charset=utf8',
                             'USER390976_bot',
                             'AntonderEroberer333#Archimedes333#'
                         );
@@ -25,7 +29,17 @@ class Container
                     }
                     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
                     return $pdo;
-                }
+                },
+
+                "pollController" => function () {
+                    return new PollController($this->make("questionRepository"));
+                },
+                "questionRepository" => function () {
+                    return new QuestionRepository($this->make("pdo"));
+                }, "adminController" => function () {
+                return new AdminController($this->make("questionRepository"));
+            }
+
             ];
     }
 

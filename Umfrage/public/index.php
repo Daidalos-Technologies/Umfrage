@@ -1,5 +1,13 @@
 <?php
 session_start();
+if(isset($_COOKIE["finish"])){
+    $_SESSION["result_id"] = $_COOKIE["finish"];
+}else {
+    if (!isset($_SESSION["result_id"])) {
+        $hash = md5(time());
+        $_SESSION["result_id"] = $hash;
+    }
+}
 require __DIR__."/../init.php";
 
 if(!isset($_SERVER["PATH_INFO"])) {
@@ -13,7 +21,12 @@ $routes =
         "/umfrage" => [
             "controller" => "pollController",
             "method" => "poll"
-        ]
+        ],
+        "/poll_admin" =>
+        [
+            "controller" => "adminController",
+            "method" => "poll_admin"
+         ]
     ];
 
 if(isset($routes[$pathInfo])) {

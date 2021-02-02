@@ -10,7 +10,7 @@ abstract class Controller
     {
         extract($params);
 
-        include __DIR__."/../../views{$view}.php";
+        include __DIR__."/../../views/{$view}.php";
     }
 
 }
