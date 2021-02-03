@@ -3,3 +3,15 @@ form
     width: 50%;
     margin: 0 auto;
 }
+
+.container
+{
+    padding-bottom: 5rem!important;
+}
+
+.last-question-wrapper
+{
+    background-color: lightskyblue;
+    padding: 25px ;
+    margin: 0 20%;
+}

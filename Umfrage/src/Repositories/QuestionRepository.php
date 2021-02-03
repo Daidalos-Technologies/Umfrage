@@ -10,9 +10,9 @@ class QuestionRepository extends Repository
     protected $table_name = "questions";
     protected $entity_path = "App\\Entities\\Question";
 
-    public function all_default ()
+    public function all_by_position ()
     {
-        $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` WHERE special = 0 ORDER BY position");
+        $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` ORDER BY position");
         $res = $stmt->fetchAll(PDO::FETCH_CLASS, "{$this->entity_path}");;
         return $res;
     }

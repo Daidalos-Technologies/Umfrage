@@ -12,7 +12,7 @@ class Question extends Entity
        public $answers;
        public $position;
        public $optional;
-       public $special;
+       public $path;
 
 
 }
