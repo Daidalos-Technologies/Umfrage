@@ -14,10 +14,12 @@
 
 <?php include __DIR__ . "/../../Elements/header.php"; ?>
 <div class="container mb-5">
+    <?php if($last_question != false): ?>
     <div class="last-question-wrapper text-center mt-5">
         <h3>Letzte Frage</h3>
         <p class="text-secondary text-center mt-2"><?php echo $last_question["title"]; ?></p>
     </div>
+    <?php endif; ?>
     <form class="mt-5" method="post" action="./poll_admin?page=add_questions" id="form">
         <input hidden name="answer-counter" value="1" id="answer-counter">
         <div class="form-group">
@@ -33,7 +35,11 @@
         <div class="form-group mt-3" id="select-wrapper">
             <label for="position">Position *</label>
             <select class="form-select mt-2" name="position" id="position" aria-label="Default select example">
+                <?php if($last_question == 0): ?>
+                    <option value="1">Erste Frage (1)</option>
+                <?php else: ?>
                 <option value="<?php echo $last_question["position"] + 1;?>">Nach letzer Frage <b>(<?php echo $last_question["position"] + 1; ?>)</b></option>
+                <?php endif; ?>
                 <option value="self-filling">Individuelle Position</option>
             </select>
         </div>
@@ -70,7 +76,7 @@
                     <input class="form-control" name="answer-1" placeholder="Antwortmöglichkeit 1" required>
                 </div>
                 <div class="col-4">
-                    <input class="form-control" placeholder="Pfad" type="number" name="pathfinder-1">
+                    <input class="form-control" placeholder="Pfad" value="0" type="number" name="pathfinder-1">
                 </div>
             </div>
 
@@ -85,9 +91,27 @@
 
     </form>
 
+    <?php if(isset($error)): ?>
+        <?php if($error == false): ?>
+            <div style="padding: 0 20%" class="mt-5">
+                <div class="alert alert-success text-center" role="alert">
+                    Frage erfolgreich hinzugefügt
+                </div>
+            </div>
+        <?php else: ?>
+            <div style="padding: 0 20%" class="mt-5">
+                <div class="alert alert-danger text-center" role="alert">
+            <?php echo $error; ?>
+        </div>
+            </div>
+        <?php endif; ?>
+  <?php endif;
+    ?>
 
 </div>
+
 <?php include __DIR__ . "/../../Elements/src.php"; ?>
+<script src="../js/snackbar.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $("body,html").animate(
@@ -101,11 +125,8 @@
     position_select.addEventListener("change", function () {
         if(this.value === "self-filling")
         {
-            let sel_input = $("<input />").addClass("form-control w-25 mt-2").attr({"required": true, "placeholder": "Position", "id": "select-input", "type": "number"}).appendTo("#select-wrapper");
-            sel_input.keyup(function (e) {
-                this.value = sel_input.val();
-                console.log(this.value)
-            })
+            let sel_input = $("<input />").addClass("form-control w-25 mt-2").attr({"required": true, "placeholder": "Position", "id": "select-input", "type": "number", "name": "individual-position"}).appendTo("#select-wrapper");
+
         }else
         {
             $("#select-input").remove();
@@ -140,7 +161,7 @@
             this.$_col8 = $("<div />").addClass("col-8").appendTo(this.$_el);
             this.$_col4 = $("<div />").addClass("col-4").appendTo(this.$_el);
             this.$_answer = $("<input />").addClass("form-control").attr({"placeholder": "Antwortmöglichkeit "+counter, "required": true, "name": "answer-"+counter}).appendTo(this.$_col8);
-            this.$_pathFinder = $("<input />").addClass("form-control").attr({"placeholder": "Pfad", "name": "pathfinder-"+counter, type: "number"}).appendTo(this.$_col4);
+            this.$_pathFinder = $("<input />").addClass("form-control").attr({"placeholder": "Pfad", "name": "pathfinder-"+counter, type: "number"}).val(0).appendTo(this.$_col4);
         }
 
         delete()

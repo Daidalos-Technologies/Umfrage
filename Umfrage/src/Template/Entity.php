@@ -6,7 +6,7 @@ namespace App\Template;
 use ArrayAccess;
 
 
-class Entity implements ArrayAccess
+abstract class Entity implements ArrayAccess
 {
 
     public function offsetExists($offset) {
