@@ -31,4 +31,16 @@ class QuestionRepository extends Repository
         return $stmt->fetch(PDO::FETCH_CLASS);
     }
 
+    function findNext($position, $path)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE position = '$position' AND path = '$path'");
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
+        return $stmt->fetch(PDO::FETCH_CLASS);
+    }
+
+
+
+
+
 }

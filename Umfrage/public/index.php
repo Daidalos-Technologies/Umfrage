@@ -1,11 +1,11 @@
 <?php
 session_start();
 if(isset($_COOKIE["finish"])){
-    $_SESSION["result_id"] = $_COOKIE["finish"];
+    $_SESSION["user_id"] = $_COOKIE["finish"];
 }else {
-    if (!isset($_SESSION["result_id"])) {
+    if (!isset($_SESSION["user_id"])) {
         $hash = md5(time());
-        $_SESSION["result_id"] = $hash;
+        $_SESSION["user_id"] = $hash;
     }
 }
 require __DIR__."/../init.php";

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../css/index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -21,29 +21,76 @@
                 <div class="card-body">
                     <h5 class="card-title"><?php echo $question["title"]; ?></h5>
                     <p class="card-text"><?php echo $question["content"]; ?></p>
-                    <form class="answers mt-5 text-left" method="post" id="form" action="./umfrage.php">
-                        <input hidden name="poll_id" value="<?php echo $question["id"]; ?>">
-                        <input hidden name="skip" id="skip_inp">
-
-                            <input name="answer" type="number" class="form-control" required>
-
-                            <select class="form-select" aria-label="Default select example" name="answer" required>
-                                <option disabled selected hidden style="background-color: grey !important">---</option> <!-- TODO: add grey background-color -->
-                                    <option value=""</option>
-                            </select>
-                                <div class="form-check text-left">
-                                    <input name="answer[]" class="form-check-input" type="checkbox" value="" id="answer-">
-                                    <label class="form-check-label" for="answer-">
-                                    </label>
+                    <form class="answers mt-5 text-left" method="post" id="form" action="./umfrage">
+                        <input hidden name="question-id" value="<?php echo $question["id"]; ?>">
+                        <input hidden name="next-path" value="0" id="next-path">
+                        <div id="answers">
+                    <?php if($question["answer_type"] === "select"): ?>
+                        <select class="form-select answer" aria-label="Default select example" name="answer" required id="answer">
+                            <option disabled selected hidden style="background-color: grey !important">---</option>
+                            <?php foreach ($answers as $answer): $answer = (array)$answer;?>
+                                <option data-path="<?php echo $answer["path"]; ?>" value="<?php echo $answer["answer-content"]; ?>"><?php echo $answer["answer-content"]; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php elseif ($question["answer_type"] === "checkbox"): ?>
+                        <?php foreach ($answers as $answer): $answer = (array)$answer;?>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" value="<?php echo $answer["answer-content"]; ?>" name="answer[]" type="checkbox" >
+                                <label class="form-check-label" ><?php echo $answer["answer-content"];  ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                        <?php elseif ($question["answer_type"] === "self-filling"): ?>
+                        <?php foreach ($answers as $answer): $answer = (array)$answer;?>
+                            <input class="form-control" id="answer" name="answer" required>
+                        <?php endforeach; ?>
+                        <?php elseif ($question["answer_type"] === "select+self-filling"): ?>
+                        <select class="form-select answer" aria-label="Default select example" name="answer" required id="answer">
+                            <option disabled selected hidden style="background-color: grey !important">---</option>
+                            <?php foreach ($answers as $answer): $answer = (array)$answer;?>
+                            <?php if($answer["type"] == "self-filling"): ?>
+                                <option id="activate-self-filling" data-path="<?php echo $answer["path"]; ?>" value="self-filling"><?php echo $answer["answer-content"]; ?></option>
+                            <?php else: ?>
+                                <option data-path="<?php echo $answer["path"]; ?>" value="<?php echo $answer["answer-content"]; ?>"><?php echo $answer["answer-content"]; ?></option>
+                            <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php elseif ($question["answer_type"] === "checkbox+self-filling"): ?>
+                        <?php foreach ($answers as $answer): $answer = (array)$answer;?>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" value="<?php echo $answer["answer-content"]; ?>" name="answer[]" type="checkbox" >
+                                <label class="form-check-label" ><?php echo $answer["answer-content"];  ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                    <input class="form-control mt-2" name="answer[]" placeholder="Eigene Antwort...">
+                        <?php endif; ?>
+                        </div>
+                        <?php if($question["optional"] === 1): ?>
                             <div class="d-flex justify-content-between align-items-center mt-4">
                                 <button type="button" class="btn btn-secondary" id="skip">Überspringen</button>
-                                <button type="submit" class="btn btn-primary">Weiter</button>
+                                <button type="submit" id="submit" class="btn btn-primary">Weiter</button>
                             </div>
-                            <button type="submit" class="btn btn-primary mt-4">Weiter</button>
+                        <?php else: ?>
+                            <button type="submit" id="submit" class="btn btn-primary mt-4">Weiter</button>
+                        <?php endif; ?>
+
                     </form>
+
+                   <form method="post" id="skip-form" action="./umfrage">
+                       <input hidden name="skip" value="1">
+                       <input hidden name="question-id" value="<?php echo $question["id"]; ?>">
+                   </form>
 
                 </div>
                 <div class="card-footer text-muted">
+                    <?php
+                    if($question["path"] !== 0)
+                    {
+                        echo "{$question["position"]}.{$question["path"]}";
+                    }else
+                    {
+                        echo $question["position"];
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -57,9 +104,25 @@
 <script type="text/javascript">
 
     $("#skip").click(function () {
-        $("#skip_inp").val("1");
-        $("#form").submit();
+       $("#skip-form").submit();
+    });
+
+    $("#answer option").click(function () {
+      $("#next-path").val(this.getAttribute("data-path"));
+    });
+
+    $("#answer option").click(function () {
+        console.log(this);
+        if(this.getAttribute("id") == "activate-self-filling")
+        {
+            $("<input />").addClass("form-control mt-3").attr({"required": true, "name": "self-answer", "id": "self-answer", "placeholder": "Deine Antwort..."}).appendTo("#answers");
+        }else
+        {
+            $("#self-answer").remove();
+        }
     })
+
+
 
 </script>
 </body>

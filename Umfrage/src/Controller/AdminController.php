@@ -20,7 +20,8 @@ if(!isset($_GET["page"]))
     $this->render("Admin/Index",[]);
 }else  if($_GET["page"] === "add_questions")
 {
-    $error = true;
+
+    $error = null;
 
     // Initialise Question Attributes
 
