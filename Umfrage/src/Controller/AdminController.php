@@ -66,6 +66,11 @@ class AdminController extends \App\Template\Controller
             die();
         }
 
+        if(isset($_POST["public"]))
+        {
+            $this->poll_repository->updatePublic($_SESSION["poll_admin"], $_POST["public"]);
+        }
+
 
         if (!isset($_GET["page"])) {
             $this->render("Admin/Index", [
@@ -158,6 +163,7 @@ class AdminController extends \App\Template\Controller
                 "all_questions" => $all_questions,
                 "last_question" => $last_question,
                 "error" => $error,
+                "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]])
 
             ]);
         } else if ($_GET["page"] === "settings") {

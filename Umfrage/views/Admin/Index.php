@@ -15,13 +15,22 @@
 <?php include __DIR__ . "/../../Elements/header.php"; ?>
 <div class="container">
 
-    <h1 class="text-center mt-5">Admin-Bereich</h1>
-    <?php if($poll["public"] == 1): ?>
-        <p class="text-center text-success">Umfrage ist öffentlich!</p>
-    <?php else: ?>
-        <p class="text-center text-danger">Umfrage ist nicht öffentlich!</p>
-    <?php endif; ?>
-    <input readonly class="form-control" value="smartpoll.antonhauffe.de/umfrage?poll_id=<?php echo $poll["id"]; ?>">
+    <div class="text-center">
+        <h1 class="mt-5 mb-2">Admin</h1>
+        <?php if($poll["public"] == 1): ?>
+            <form action="./poll_admin" method="post">
+                <input hidden name="public" value="0">
+                <button class="btn btn-success">Öffentlich</button>
+            </form>
+        <?php else: ?>
+            <form action="./poll_admin" method="post">
+                <input hidden name="public" value="1">
+                <button class="btn btn-danger">Nicht öffentlich</button>
+            </form>
+        <?php endif; ?>
+        <input readonly class="form-control" value="smartpoll.antonhauffe.de/index.php/umfrage?poll_id=<?php echo $poll["id"]; ?>">
+    </div>
+
 
 <div class="menu">
     <a href="./poll_admin?page=add_questions" class="menu-item btn btn-primary" ><div class="d-flex justify-content-center align-items-center h-100 w-100">Fragen Hinzufügen</div></a>

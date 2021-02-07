@@ -11,7 +11,7 @@
 
 <body>
 
-<?php include __DIR__."/../Elements/header.php"; ?>
+<?php include __DIR__ . "/../../Elements/header.php"; ?>
 <div class="container">
         <div class="poll-container">
             <div class="card text-center">

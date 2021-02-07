@@ -4,11 +4,12 @@ html {
 header
 {
     width: 100%;
-    background-image: url("../../img/bitcoin-vs-litecoin-vs-ethereum.jpg");
+    background-image: url("../img/wp4254953.jpg");
     background-size: cover;
     background-position-x: center;
-    background-position-y: 49%;
+    background-position-y: 30%;
     border-bottom-style: wave;
+    height: 200px;
 
 }
 

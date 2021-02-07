@@ -31,7 +31,12 @@ $routes =
             [
                 "controller" => "adminController",
                 "method" => "system_admin"
-            ]
+            ],
+        "/index" =>
+        [
+            "controller" => "pageController",
+            "method" => "index"
+        ]
     ];
 
 if (isset($routes[$pathInfo])) {

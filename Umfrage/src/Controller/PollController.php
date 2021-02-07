@@ -40,6 +40,12 @@ class PollController extends \App\Template\Controller
             die();
         }
 
+        if($poll['public'] == 0)
+        {
+            echo "Diese Umfrage ist noch nicht öffentlich! <a href='./index'>Startseite</a>";
+            die();
+        }
+
 
 
 
@@ -86,7 +92,7 @@ class PollController extends \App\Template\Controller
 
         }else
         {
-         $this->render("index",
+         $this->render("Poll/index",
          [
              "poll" => $poll
          ]);
@@ -102,7 +108,7 @@ class PollController extends \App\Template\Controller
 
 
 
-        $this->render("Umfrage",
+        $this->render("Poll/Umfrage",
         [
             "question" => $question,
             "answers" => $answers

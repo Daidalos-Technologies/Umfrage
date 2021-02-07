@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Controller\PageController as PageController;
 use App\Repositories\PollRepository as PollRepository;
 use PDO;
 use App\Controller\PollController as PollController;
@@ -46,7 +47,9 @@ class Container
             },
                 "pollRepository" => function() {
                     return new PollRepository($this->make("pdo"));
-                }
+                }, "pageController" => function () {
+                return new PageController($this->make("questionRepository"), $this->make("resultRepository"), $this->make("pollRepository"));
+            }
 
             ];
     }
