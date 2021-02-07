@@ -2,11 +2,13 @@
 
 namespace App\Core;
 
+use App\Repositories\PollRepository as PollRepository;
 use PDO;
 use App\Controller\PollController as PollController;
 use App\Repositories\QuestionRepository as QuestionRepository;
 use App\Controller\AdminController as AdminController;
 use App\Repositories\ResultRepository as ResultRepository;
+
 class Container
 {
 
@@ -33,15 +35,18 @@ class Container
                 },
 
                 "pollController" => function () {
-                    return new PollController($this->make("questionRepository"), $this->make("resultRepository"));
+                    return new PollController($this->make("questionRepository"), $this->make("resultRepository"), $this->make("pollRepository"));
                 },
                 "questionRepository" => function () {
                     return new QuestionRepository($this->make("pdo"));
                 }, "resultRepository" => function () {
                 return new ResultRepository($this->make("pdo"));
             }, "adminController" => function () {
-                return new AdminController($this->make("questionRepository"));
-            }
+                return new AdminController($this->make("questionRepository"), $this->make("resultRepository"), $this->make("pollRepository"));
+            },
+                "pollRepository" => function() {
+                    return new PollRepository($this->make("pdo"));
+                }
 
             ];
     }

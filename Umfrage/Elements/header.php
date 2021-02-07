@@ -8,21 +8,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav" style="margin-left: auto!important;">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Startseite</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Über dieses Projekt</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Impressum</a>
+                    <li class="nav-item ">
+                        <a class="nav-link btn btn-danger" href="./poll_admin">Admin</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
     <div class="title d-flex align-items-center justify-content-center">
-        <div class="title-wrapper text-center"><h1>Semi-Arbeit-Kryptowährung</h1>
-            <p>Anton, Leander, Julius, Jakob und Shuhib</p></div>
+        <div class="title-wrapper text-center"><h1><?php echo $poll['title']; ?></h1>
+            <p class="text-secondary">Erstellt mit <b>SmartPoll</b></p>
     </div>
 </header>

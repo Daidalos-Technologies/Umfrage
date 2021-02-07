@@ -22,13 +22,17 @@ require "init.php";
 <div class="container">
     <div class="welcome-text">
         <p class="welcome-text-content">
-        Guten Tag,<br><br>
+        Guten Tag,
+
         wir sind eine Gruppe von fünf Schülern in der 11. Klasse der Staatlichen Gemeinschaftsschule Jenaplan in Weimar und müssen, im Rahmen der Oberstufe, eine Seminarfacharbeit, also eine erste wissenschaftliche Arbeit, ablegen.<br><br>
-        In unserer Arbeit beschäftigen wir uns mit dem Thema “Kryptowährung” und ob es möglich ist, eine “konventionelle Währung” durch eine Kryptowährung zu ersetzen.<br><br>
-        Mit Hilfe dieses Fragebogens möchten wir Ihre Meinung zu dem Thema “Kryptowährung” erfragen.<br><br>
+        In unserer Arbeit beschäftigen wir uns mit dem Thema “Kryptowährung” und ob es möglich ist, eine “konventionelle Währung” durch eine Kryptowährung zu ersetzen.
+
+        Mit Hilfe dieses Fragebogens möchten wir Ihre Meinung zu dem Thema “Kryptowährung” erfragen.
         Damit unsere Umfrage repräsentativ werden kann, müssen wir Sie in den ersten Fragen nach ein paar persönlichen Daten fragen. Wir wären Ihnen sehr verbunden, wenn Sie uns diese Informationen nicht vorenthalten würden.<br><br>
-        Falls Sie Fragen haben, dann erreichen uns unter der unten stehenden E-Mail-Adresse.<br><br>
-        Vielen Dank, dass Sie sich Zeit nehmen, diesen Fragebogen auszufüllen und uns damit bei unserer Arbeit zu unterstützen.<br><br>
+        Falls Sie Fragen haben, dann erreichen uns unter der unten stehenden E-Mail-Adresse.
+
+        Vielen Dank, dass Sie sich Zeit nehmen, diesen Fragebogen auszufüllen und uns damit bei unserer Arbeit zu unterstützen.
+
         </p>
         <div class="d-flex justify-content-between align-items-center mt-4">
             <?php if(isset($_COOKIE["finish"])): ?>

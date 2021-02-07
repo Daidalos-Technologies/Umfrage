@@ -18,21 +18,29 @@ abstract class Repository
         }
     }
 
-    function all()
+    public function all()
     {
         $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}`");
         $res = $stmt->fetchAll(PDO::FETCH_CLASS, "{$this->entity_path}");;
         return $res;
     }
 
-    function allBy($col, $type)
+    public function allBy($col, $type)
     {
         $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` ORDER BY $col $type");
         $res = $stmt->fetchAll(PDO::FETCH_CLASS, "{$this->entity_path}");;
         return $res;
     }
 
-    function find($params)
+    public function find($params)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE {$params[0]}= :placeholder");
+        $stmt->execute(["placeholder" => $params[1]]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
+        return $stmt->fetch(PDO::FETCH_CLASS);
+    }
+
+    public function findByPoll($params, $poll)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE {$params[0]}= :placeholder");
         $stmt->execute(["placeholder" => $params[1]]);
