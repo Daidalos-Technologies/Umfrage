@@ -29,7 +29,7 @@
             <?php endif; ?>
             <?php else: ?>
                 <form action="./umfrage?poll_id=<?php echo $poll["id"]; ?>" method="post">
-                    <input hidden name="question-id" value="1">
+                    <input hidden name="poll-start" value="1">
                     <button type="submit" class="btn btn-primary">Teilnehmen</button>
                 </form>
             <?php endif; ?>

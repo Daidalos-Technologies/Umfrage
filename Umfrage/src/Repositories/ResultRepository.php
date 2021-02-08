@@ -30,5 +30,23 @@ class ResultRepository extends \App\Template\Repository
 
     }
 
+    public function allByQuestion($question_id, $poll)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE question_id = :question_id AND poll = :poll");
+        $stmt->execute(["question_id" => $question_id, "poll" => $poll]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
+        return $stmt->fetch(PDO::FETCH_CLASS);
+
+    }
+
+    public function allByUser($user_id, $poll)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE user_id = :user_id AND poll = :poll");
+        $stmt->execute(["user_id" => $user_id, "poll" => $poll]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
+        return $stmt->fetch(PDO::FETCH_CLASS);
+
+    }
+
 
 }

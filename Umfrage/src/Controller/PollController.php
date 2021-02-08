@@ -47,13 +47,32 @@ class PollController extends \App\Template\Controller
         }
 
 
+        if(isset($_POST["poll-start"]))
+        {
 
+            $question = $this->question_repository->findNext(1, 0, $poll_id);
+
+            $answers_string = $question["answers"];
+            $answers = json_decode($answers_string);
+
+            $answers = (array)$answers;
+
+            $this->render("Poll/Umfrage",
+                [
+                    "question" => $question,
+                    "answers" => $answers,
+                    "poll" => $poll
+                ]);
+
+            die();
+
+        }
 
 
         if(isset($_POST["question-id"]))
         {
-            $old_question = $this->question_repository->findByPoll(["id", $_POST["question-id"]], $poll_id);
 
+            $old_question = $this->question_repository->findByPoll(["id", $_POST["question-id"]], $poll_id);
 
 
         if(!isset($_POST["skip"])){
@@ -77,42 +96,54 @@ class PollController extends \App\Template\Controller
 
             }else
             {
-                $this->result_repository->addResult($_SESSION["user_id"], $old_question["id"], $answer, $poll_id);
+                $this->result_repository->addResult($_SESSION["user_id"], $_GET["poll_id"], $answer, $poll_id);
             }
         }else
         {
             $next_path = 0;
         }
 
-
             $next_position = $old_question["position"] + 1;
 
             $question = $this->question_repository->findNext($next_position, $next_path, $poll_id);
+
+            if($question)
+            {
+
+                $answers_string = $question["answers"];
+                $answers = json_decode($answers_string);
+
+                $answers = (array)$answers;
+                $this->render("Poll/Umfrage",
+                    [
+                        "question" => $question,
+                        "answers" => $answers,
+                        "poll" => $poll
+                    ]);
+            }else
+            {
+                setcookie("finish", $_SESSION["user_id"], time()+(3600*24*365));
+                $user_results = $this->result_repository->allByUser($_SESSION["user_id"], $poll);
+
+                $this->render("Poll/finish",
+                [
+                   "poll" => $poll,
+                    "results" => $user_results
+                ]);
+            }
 
 
         }else
         {
          $this->render("Poll/index",
          [
-             "poll" => $poll
+             "poll" => $poll,
          ]);
          die();
         }
 
-        $answers_string = $question["answers"];
-        $answers = json_decode($answers_string);
-
-        $answers = (array)$answers;
 
 
-
-
-
-        $this->render("Poll/Umfrage",
-        [
-            "question" => $question,
-            "answers" => $answers
-        ]);
     }
 
 }

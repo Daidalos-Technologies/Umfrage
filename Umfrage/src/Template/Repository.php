@@ -47,4 +47,11 @@ abstract class Repository
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
         return $stmt->fetch(PDO::FETCH_CLASS);
     }
+
+    public function allByPoll($poll)
+    {
+        $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` WHERE poll = '$poll'");
+        $res = $stmt->fetchAll(PDO::FETCH_CLASS, "{$this->entity_path}");;
+        return $res;
+    }
 }

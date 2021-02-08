@@ -36,7 +36,7 @@
     <a href="./poll_admin?page=add_questions" class="menu-item btn btn-primary" ><div class="d-flex justify-content-center align-items-center h-100 w-100">Fragen Hinzufügen</div></a>
     <a class="menu-item btn btn-Warning"><div class="d-flex justify-content-center align-items-center h-100 w-100">Fragen Bearbeiten/Löschen</div></a>
     <a href="./poll_admin?page=settings" class="menu-item btn btn-secondary"><div class="d-flex justify-content-center align-items-center h-100 w-100">Einstellungen</div></a>
-    <a class="menu-item btn btn-success"><div class="d-flex justify-content-center align-items-center h-100 w-100">Ergebnisse</div></a>
+    <a href="./poll_admin?page=results" class="menu-item btn btn-success"><div class="d-flex justify-content-center align-items-center h-100 w-100">Ergebnisse</div></a>
 
 </div>
 

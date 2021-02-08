@@ -192,6 +192,32 @@ class AdminController extends \App\Template\Controller
 
 
 
+        } else if($_GET["page"] == "results")
+        {
+
+            $results = [];
+            $questions = $this->question_repository->allByPoll($_SESSION["poll_admin"]);
+
+            foreach ($questions as $question)
+            {
+                $question_results = $this->result_repository->allByQuestion($question["id"], $_SESSION["poll_admin"]);
+
+                array_push(
+                    $results,
+                    [
+                        "question" => $question,
+                        "question_results" => $question_results
+
+                    ]
+                );
+            };
+
+
+            $this->render("Admin/Results",
+            [
+                "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]])
+            ]
+            );
         }
 
 

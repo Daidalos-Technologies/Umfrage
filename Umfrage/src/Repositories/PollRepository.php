@@ -27,4 +27,5 @@ class PollRepository extends \App\Template\Repository
         $statement = $this->pdo->prepare("UPDATE polls SET public = :public WHERE id = :id");
         $statement->execute(array("public" => $public, "id" => $id));
     }
+
 }
