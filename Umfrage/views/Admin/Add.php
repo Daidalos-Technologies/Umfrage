@@ -136,6 +136,17 @@
 
     document.getElementById("answer-type").addEventListener("change", function ()
     {
+
+        $("#answers input").remove();
+
+        if($("#answer-type").val() == "select")
+        {
+            answers.push(new Answer(counter, true));
+        }else
+        {
+            answers.push(new Answer(counter, false));
+        }
+
         if(this.value === "self-filling")
         {
             $(".answer-wrapper").css("display", "none");
@@ -155,13 +166,22 @@
 
     class Answer
     {
-        constructor(counter) {
+        constructor(counter, path) {
             this.counter = counter;
-            this.$_el = $("<div />").addClass("row mt-2").appendTo("#answers");
-            this.$_col8 = $("<div />").addClass("col-8").appendTo(this.$_el);
-            this.$_col4 = $("<div />").addClass("col-4").appendTo(this.$_el);
-            this.$_answer = $("<input />").addClass("form-control").attr({"placeholder": "Antwortmöglichkeit "+counter, "required": true, "name": "answer-"+counter}).appendTo(this.$_col8);
-            this.$_pathFinder = $("<input />").addClass("form-control").attr({"placeholder": "Pfad", "name": "pathfinder-"+counter, type: "number"}).val(0).appendTo(this.$_col4);
+            if(path == true)
+            {
+                this.$_el = $("<div />").addClass("row mt-2").appendTo("#answers");
+                this.$_col8 = $("<div />").addClass("col-8").appendTo(this.$_el);
+                this.$_col4 = $("<div />").addClass("col-4").appendTo(this.$_el);
+                this.$_answer = $("<input />").addClass("form-control").attr({"placeholder": "Antwortmöglichkeit "+counter, "required": true, "name": "answer-"+counter}).appendTo(this.$_col8);
+                this.$_pathFinder = $("<input />").addClass("form-control").attr({"placeholder": "Pfad", "name": "pathfinder-"+counter, type: "number"}).appendTo(this.$_col4);
+            }else
+            {
+                this.$_el = $("<div />").addClass("row mt-2").appendTo("#answers");
+                this.$_col12 = $("<div />").addClass("col-12").appendTo(this.$_el);
+                this.$_answer = $("<input />").addClass("form-control").attr({"placeholder": "Antwortmöglichkeit "+counter, "required": true, "name": "answer-"+counter}).appendTo(this.$_col12);
+            }
+
         }
 
         delete()
@@ -174,7 +194,14 @@
     $("#add-answer").click(function () {
         counter++;
         $("#answer-counter").val(counter);
-        answers.push(new Answer(counter));
+        if($("#answer-type").val() == "select")
+        {
+            answers.push(new Answer(counter, true));
+        }else
+        {
+            answers.push(new Answer(counter, false));
+        }
+
         $("body,html").animate(
             {
                 scrollTop: $("#answers").offset().top

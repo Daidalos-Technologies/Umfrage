@@ -45,6 +45,13 @@ class QuestionRepository extends Repository
         $statement->execute(array('question_id' => $question_id, 'poll' => $poll));
     }
 
+    public function update($id, $title, $introduction)
+    {
+
+        $statement = $this->pdo->prepare("UPDATE polls SET title = :title, introduction = :introduction WHERE id = :id");
+        $statement->execute(array("title" => $title, "introduction" => $introduction, "id" => $id));
+    }
+
 
 
 
