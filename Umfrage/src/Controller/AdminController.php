@@ -218,6 +218,20 @@ class AdminController extends \App\Template\Controller
                 "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]])
             ]
             );
+        }else if($_GET["page"] == "edit")
+        {
+
+            if(isset($_POST["delete"]))
+            {
+                $this->question_repository->delete($_POST["delete"], $_SESSION["poll_admin"]);
+            }
+
+            $questions = $this->question_repository->allByPoll($_SESSION["poll_admin"]);
+
+            $this->render("Admin/Edit", [
+                "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
+                "questions" => $questions
+            ]);
         }
 
 

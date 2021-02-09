@@ -39,6 +39,12 @@ class QuestionRepository extends Repository
         return $stmt->fetch(PDO::FETCH_CLASS);
     }
 
+    public function delete($question_id, $poll)
+    {
+        $statement = $this->pdo->prepare("DELETE FROM `$this->table_name` WHERE id = :question_id AND poll = :poll");
+        $statement->execute(array('question_id' => $question_id, 'poll' => $poll));
+    }
+
 
 
 

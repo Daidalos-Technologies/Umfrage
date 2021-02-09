@@ -50,7 +50,7 @@ abstract class Repository
 
     public function allByPoll($poll)
     {
-        $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` WHERE poll = '$poll'");
+        $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` WHERE poll = '$poll' ORDER BY position");
         $res = $stmt->fetchAll(PDO::FETCH_CLASS, "{$this->entity_path}");;
         return $res;
     }
