@@ -76,6 +76,21 @@ class PollController extends \App\Template\Controller
 
 
         if(!isset($_POST["skip"])){
+
+            if(!isset($_POST["answer"]))
+            {
+                $question = $old_question;
+                $answers_string = $question["answers"];
+                $answers = json_decode($answers_string);
+
+                $answers = (array)$answers;
+                $this->render("Poll/Umfrage",
+                    [
+                        "question" => $question,
+                        "answers" => $answers,
+                        "poll" => $poll
+                    ]);
+            }
             $check_result = $this->result_repository->checkResult($_SESSION["user_id"], $old_question["id"], $poll_id);
 
             $answer = $_POST["answer"];
@@ -103,6 +118,20 @@ class PollController extends \App\Template\Controller
             $next_path = 0;
         }
 
+        if($old_question["finish"] == 1)
+        {
+            setcookie("finish", $_SESSION["user_id"], time()+(3600*24*365));
+            $user_results = $this->result_repository->allByUser($_SESSION["user_id"], $poll);
+
+            $this->render("Poll/finish",
+                [
+                    "poll" => $poll,
+                    "results" => $user_results
+                ]);
+
+            die();
+        }
+
             $next_position = $old_question["position"] + 1;
 
             $question = $this->question_repository->findNext($next_position, $next_path, $poll_id);
@@ -122,14 +151,9 @@ class PollController extends \App\Template\Controller
                     ]);
             }else
             {
-                setcookie("finish", $_SESSION["user_id"], time()+(3600*24*365));
-                $user_results = $this->result_repository->allByUser($_SESSION["user_id"], $poll);
-
-                $this->render("Poll/finish",
-                [
-                   "poll" => $poll,
-                    "results" => $user_results
-                ]);
+                echo "$next_position + $next_path + $poll_id";
+              echo "Frage nicht gefunden!";
+                die();
             }
 
 

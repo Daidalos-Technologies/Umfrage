@@ -20,29 +20,24 @@ class AdminController extends \App\Template\Controller
     public function poll_admin()
     {
 
-        if(isset($_POST["logout"]))
-        {
+        if (isset($_POST["logout"])) {
             unset($_SESSION["poll_admin"]);
         }
 
         $login = false;
 
-        if(!isset($_SESSION["poll_admin"]))
-        {
-            if(isset($_POST["id"]))
-            {
+        if (!isset($_SESSION["poll_admin"])) {
+            if (isset($_POST["id"])) {
                 $id = $_POST["id"];
                 $password = $_POST["password"];
                 $accessed_poll = $this->poll_repository->find(["id", $id]);
 
-                if(password_verify($password, $accessed_poll["admin_pw"]))
-                {
+                if (password_verify($password, $accessed_poll["admin_pw"])) {
 
                     $_SESSION["poll_admin"] = $id;
                     $login = true;
 
-                }else
-                {
+                } else {
                     $this->render("Admin/password_checker", [
                         "error" => "Das <b>Passwort</b> stimmt nicht mit der <b>ID</b> über ein",
                         "poll_admin" => 1
@@ -50,24 +45,20 @@ class AdminController extends \App\Template\Controller
                 }
 
 
-            }else
-            {
+            } else {
                 $this->render("Admin/password_checker", [
                     "poll_admin" => 1
                 ]);
             }
-        }else
-        {
+        } else {
             $login = true;
         }
 
-        if(!$login)
-        {
+        if (!$login) {
             die();
         }
 
-        if(isset($_POST["public"]))
-        {
+        if (isset($_POST["public"])) {
             $this->poll_repository->updatePublic($_SESSION["poll_admin"], $_POST["public"]);
         }
 
@@ -94,6 +85,12 @@ class AdminController extends \App\Template\Controller
                     $optional = 1;
                 } else {
                     $optional = 0;
+                }
+
+                if (isset($_POST["finish"])) {
+                    $finish = 1;
+                } else {
+                    $finish = 0;
                 }
 
                 if (isset($_POST["path-question"])) {
@@ -145,7 +142,7 @@ class AdminController extends \App\Template\Controller
 
 
                 if ($this->question_repository->check($position, $path) == false) {
-                    $this->question_repository->addQuestion($title, $content, $position, $optional, $path, $answers_string, $answer_type, $_SESSION["poll_admin"]);
+                    $this->question_repository->addQuestion($title, $content, $position, $optional, $finish, $path, $answers_string, $answer_type, $_SESSION["poll_admin"]);
                     $error = false;
                 } else {
                     $error = "Bitte gib der Frage eine andere Position oder Pfad";
@@ -168,8 +165,7 @@ class AdminController extends \App\Template\Controller
             ]);
         } else if ($_GET["page"] === "settings") {
 
-            if(isset($_POST["title"]))
-            {
+            if (isset($_POST["title"])) {
                 $id = $_POST["id"];
                 $title = $_POST["title"];
                 $introduction = $_POST["introduction"];
@@ -181,8 +177,7 @@ class AdminController extends \App\Template\Controller
                         "success" => "Umfrage erfolgreich aktualisiert!"
 
                     ]);
-            }else
-            {
+            } else {
                 $this->render("Admin/Settings",
                     [
                         "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]])
@@ -191,15 +186,12 @@ class AdminController extends \App\Template\Controller
             }
 
 
-
-        } else if($_GET["page"] == "results")
-        {
+        } else if ($_GET["page"] == "results") {
 
             $results = [];
             $questions = $this->question_repository->allByPoll($_SESSION["poll_admin"]);
 
-            foreach ($questions as $question)
-            {
+            foreach ($questions as $question) {
                 $question_results = $this->result_repository->allByQuestion($question["id"], $_SESSION["poll_admin"]);
 
                 array_push(
@@ -214,23 +206,81 @@ class AdminController extends \App\Template\Controller
 
 
             $this->render("Admin/Results",
-            [
-                "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]])
-            ]
+                [
+                    "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]])
+                ]
             );
-        }else if($_GET["page"] == "edit")
-        {
-
-            if(isset($_POST["delete"]))
-            {
+        } else if ($_GET["page"] == "edit") {
+            $success = false;
+            if (isset($_POST["delete"])) {
                 $this->question_repository->delete($_POST["delete"], $_SESSION["poll_admin"]);
+
+                $success = "Die Frage mit der ID {$_POST['delete']} wurde erfolgreich gelöscht";
+            } else if (isset($_POST["edit-id"])) {
+                $questions = $this->question_repository->allByPoll($_SESSION["poll_admin"]);
+                $question = $this->question_repository->find(["id", $_POST["edit-id"]]);
+                $answers_string = $question["answers"];
+                $answers = json_decode($answers_string);
+
+                $answers = (array)$answers;
+
+
+                $this->render("Admin/Edit", [
+                    "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
+                    "questions" => $questions,
+                    "edit_question" => $question,
+                    "answers" => $answers
+                ]);
+
+                die();
+            } else if (isset($_POST["edit"])) {
+                $id = $_POST["id"];
+                $title = $_POST["title"];
+                $content = $_POST["content"];
+                $position = $_POST["position"];
+                $pathfinder = $_POST["pathfinder"];
+                $path = $_POST["path"];
+                if(isset($_POST["finish"]))
+                {
+                    $finish = 1;
+                }else
+                {
+                    $finish = 0;
+                }
+                if(isset($_POST["optional"]))
+                {
+                    $optional = 1;
+                }else
+                {
+                    $optional = 0;
+                }
+                $answers = $_POST["answer"];
+                $temp_answers = [];
+                $temp_counter = 0;
+                foreach ($answers as $answer) {
+                    array_push($temp_answers, [
+                        "answer-content" => $answer,
+                        "type" => "default",
+                        "path" => $pathfinder[$temp_counter]
+
+                    ]);
+                    $temp_counter++;
+                }
+
+                $answers_string = json_encode($temp_answers);
+
+                $this->question_repository->update($id, $title, $content, $answers_string, $position, $path, $optional, $finish);
+
+                $success = "Die Frage mit der ID {$id} wurde erfolgreich aktualisiert";
+
             }
 
             $questions = $this->question_repository->allByPoll($_SESSION["poll_admin"]);
 
             $this->render("Admin/Edit", [
                 "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
-                "questions" => $questions
+                "questions" => $questions,
+                "success" => $success
             ]);
         }
 

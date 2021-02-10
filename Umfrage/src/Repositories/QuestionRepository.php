@@ -17,7 +17,7 @@ class QuestionRepository extends Repository
         return $res;
     }
 
-    public function addQuestion($title, $content, $position, $optional, $path, $answers, $answer_type, $poll)
+    public function addQuestion($title, $content, $position, $optional, $finish, $path, $answers, $answer_type, $poll)
     {
         $stmt = $this->pdo->prepare("INSERT INTO `$this->table_name` (`title`, `content`, `position`, `optional`, `path`, `answers`, `answer_type`, `poll`) VALUES (:title, :content, :position, :optional, :path, :answers, :answer_type, :poll)");
         $stmt->execute(["title" => $title, "content" => $content, "position" => $position, "optional" => $optional, "path" => $path, "answers" => $answers, "answer_type" => $answer_type, "poll" => $poll ]);
@@ -45,11 +45,11 @@ class QuestionRepository extends Repository
         $statement->execute(array('question_id' => $question_id, 'poll' => $poll));
     }
 
-    public function update($id, $title, $introduction)
+    public function update($id, $title, $content, $answers, $position, $path, $optional, $finish)
     {
 
-        $statement = $this->pdo->prepare("UPDATE polls SET title = :title, introduction = :introduction WHERE id = :id");
-        $statement->execute(array("title" => $title, "introduction" => $introduction, "id" => $id));
+        $statement = $this->pdo->prepare("UPDATE `$this->table_name` SET title = :title, content = :content, answers = :answers, position = :position, path = :path, optional = :optional, finish = :finish WHERE id = :id");
+        $statement->execute(array("title" => $title, "content" => $content, "answers" => $answers, "position" => $position, "path" => $path, "optional" => $optional, "finish" => $finish, "id" => $id));
     }
 
 

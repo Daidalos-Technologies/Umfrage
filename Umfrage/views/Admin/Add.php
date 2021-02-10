@@ -51,10 +51,18 @@
             </div>
         </div>
 
+
         <div class="form-group mt-3" id="path-wrapper">
             <div class="form-check form-switch">
                 <input class="form-check-input" name="path-question" type="checkbox" id="path-question">
                 <label class="form-check-label" for="path-question">Verschachtelte Frage</label>
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <div class="form-check form-switch">
+                <input class="form-check-input" name="finish" type="checkbox" id="finish">
+                <label class="form-check-label" for="finish">Beendet Umfrage</label>
             </div>
         </div>
 
@@ -76,7 +84,7 @@
                     <input class="form-control" name="answer-1" placeholder="Antwortmöglichkeit 1" required>
                 </div>
                 <div class="col-4">
-                    <input class="form-control" placeholder="Pfad" value="0" type="number" name="pathfinder-1">
+                    <input class="form-control" placeholder="Pfad"  type="number" name="pathfinder-1">
                 </div>
             </div>
 
