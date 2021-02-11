@@ -90,7 +90,11 @@ class PollController extends \App\Template\Controller
                         "answers" => $answers,
                         "poll" => $poll
                     ]);
+
+                die();
             }
+
+
             $check_result = $this->result_repository->checkResult($_SESSION["user_id"], $old_question["id"], $poll_id);
 
             $answer = $_POST["answer"];
@@ -120,13 +124,15 @@ class PollController extends \App\Template\Controller
 
         if($old_question["finish"] == 1)
         {
-            setcookie("finish", $_SESSION["user_id"], time()+(3600*24*365));
-            $user_results = $this->result_repository->allByUser($_SESSION["user_id"], $poll);
+            setcookie("finish", $poll_id, time()+(3600*24*365));
+           $user_results = $this->result_repository->allByUser($_SESSION["user_id"], $poll_id);
+           $outro = $poll["outroduction"];
 
             $this->render("Poll/finish",
                 [
                     "poll" => $poll,
-                    "results" => $user_results
+                    "results" => $user_results,
+                    "outro" => $outro
                 ]);
 
             die();
@@ -151,7 +157,6 @@ class PollController extends \App\Template\Controller
                     ]);
             }else
             {
-                echo "$next_position + $next_path + $poll_id";
               echo "Frage nicht gefunden!";
                 die();
             }

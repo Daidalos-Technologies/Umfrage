@@ -19,8 +19,8 @@ class QuestionRepository extends Repository
 
     public function addQuestion($title, $content, $position, $optional, $finish, $path, $answers, $answer_type, $poll)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO `$this->table_name` (`title`, `content`, `position`, `optional`, `path`, `answers`, `answer_type`, `poll`) VALUES (:title, :content, :position, :optional, :path, :answers, :answer_type, :poll)");
-        $stmt->execute(["title" => $title, "content" => $content, "position" => $position, "optional" => $optional, "path" => $path, "answers" => $answers, "answer_type" => $answer_type, "poll" => $poll ]);
+        $stmt = $this->pdo->prepare("INSERT INTO `$this->table_name` (`title`, `content`, `position`, `optional`, `finish`, `path`, `answers`, `answer_type`, `poll`) VALUES (:title, :content, :position, :optional, :finish, :path, :answers, :answer_type, :poll)");
+        $stmt->execute(["title" => $title, "content" => $content, "position" => $position, "optional" => $optional, "finish" => $finish, "path" => $path, "answers" => $answers, "answer_type" => $answer_type, "poll" => $poll ]);
     }
 
     public function check($position, $path)

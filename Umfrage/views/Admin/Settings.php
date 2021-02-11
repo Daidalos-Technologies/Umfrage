@@ -32,6 +32,11 @@
             <textarea class="form-control mt-2" rows="10" name="introduction" required><?php echo $poll["introduction"]; ?></textarea>
         </div>
 
+        <div class="form-group mt-3">
+            <label>Dankestext *</label>
+            <textarea class="form-control mt-2" rows="5" name="outroduction" required><?php echo $poll["outroduction"]; ?></textarea>
+        </div>
+
         <div class="text-center">
             <button class="btn btn-primary mt-3">Absenden</button>
         </div>

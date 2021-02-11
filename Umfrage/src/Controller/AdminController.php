@@ -169,7 +169,8 @@ class AdminController extends \App\Template\Controller
                 $id = $_POST["id"];
                 $title = $_POST["title"];
                 $introduction = $_POST["introduction"];
-                $this->poll_repository->update($id, $title, $introduction);
+                $outroduction = $_POST["outroduction"];
+                $this->poll_repository->update($id, $title, $introduction, $outroduction);
 
                 $this->render("Admin/Settings",
                     [
