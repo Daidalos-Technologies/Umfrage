@@ -25,9 +25,11 @@ class ResultRepository extends \App\Template\Repository
 
     }
 
-    public  function updateResult($user_id, $question_id, $answer)
+    public function update($id, $answer)
     {
 
+        $statement = $this->pdo->prepare("UPDATE `$this->table_name` SET answer = :answer WHERE id = :id");
+        $statement->execute(array("id" => $id, "answer" => $answer));
     }
 
     public function allByQuestion($question_id, $poll)

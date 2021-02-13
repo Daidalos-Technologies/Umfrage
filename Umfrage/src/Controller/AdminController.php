@@ -112,14 +112,14 @@ class AdminController extends \App\Template\Controller
                             array_push($answers, [
                                 "answer-content" => $_POST["answer-$i"],
                                 "type" => "self-filling",
-                                "path" => $_POST["pathfinder-$i"]
+                                "path" => 0
 
                             ]);
                         } else {
                             array_push($answers, [
                                 "answer-content" => $_POST["answer-$i"],
                                 "type" => "default",
-                                "path" => $_POST["pathfinder-$i"]
+                                "path" => 0
 
                             ]);
                         }
@@ -128,7 +128,7 @@ class AdminController extends \App\Template\Controller
                         array_push($answers, [
                             "answer-content" => $_POST["answer-$i"],
                             "type" => "default",
-                            "path" => $_POST["pathfinder-$i"]
+                            "path" => 0
 
                         ]);
                     }
@@ -239,7 +239,11 @@ class AdminController extends \App\Template\Controller
                 $title = $_POST["title"];
                 $content = $_POST["content"];
                 $position = $_POST["position"];
-                $pathfinder = $_POST["pathfinder"];
+                if(isset($_POST["pathfinder"]))
+                {
+                    $pathfinder = $_POST["pathfinder"];
+                }
+
                 $path = $_POST["path"];
                 if(isset($_POST["finish"]))
                 {
@@ -259,12 +263,24 @@ class AdminController extends \App\Template\Controller
                 $temp_answers = [];
                 $temp_counter = 0;
                 foreach ($answers as $answer) {
-                    array_push($temp_answers, [
-                        "answer-content" => $answer,
-                        "type" => "default",
-                        "path" => $pathfinder[$temp_counter]
+                    if(isset($_POST["pathfinder"]))
+                    {
+                        array_push($temp_answers, [
+                            "answer-content" => $answer,
+                            "type" => "default",
+                            "path" => $pathfinder[$temp_counter]
 
-                    ]);
+                        ]);
+                    }else
+                    {
+                        array_push($temp_answers, [
+                            "answer-content" => $answer,
+                            "type" => "default",
+                            "path" => 0
+
+                        ]);
+                    }
+
                     $temp_counter++;
                 }
 

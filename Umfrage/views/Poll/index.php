@@ -19,7 +19,7 @@
         </p>
         <div class="d-flex justify-content-between align-items-center mt-4">
             <?php if(isset($_COOKIE["finish"])): ?>
-            <?php if($_COOKIE["finish"] == $poll["id"]): ?>
+            <?php if($_COOKIE["finish"] == $poll["id"] && $admin == false): ?>
                 <a class="btn btn-primary" href="./finish.php">Ergebnisse</a>
             <?php else: ?>
                 <form action="./umfrage?poll_id=<?php echo $poll["id"]; ?>" method="post">

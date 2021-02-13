@@ -123,7 +123,7 @@
                         </div>
                     </div>
 
-                    <div class="answer-wrapper">
+                    <div class="answer-wrapper   <?php if($edit_question["answer_type"] == "self-filling"){echo "d-none";} ?>">
                         <div id="answers" class="mt-3">
                             <label>Antwortmöglichkeiten *</label>
                             <?php $counter = 0;
@@ -158,6 +158,7 @@
                         <button type="button" class="btn btn-secondary mt-2" id="add-answer">+</button>
                         <button type="button" class="btn btn-secondary mt-2" id="remove-answer">-</button>
                     </div>
+
                     <div class="text-center">
                         <button class="btn btn-primary mt-3">Absenden</button>
                     </div>

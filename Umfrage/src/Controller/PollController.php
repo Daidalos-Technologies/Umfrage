@@ -18,6 +18,7 @@ class PollController extends \App\Template\Controller
     public function poll()
     {
 
+
         if(isset($_GET["poll_id"]))
         {
             $poll_id = $_GET["poll_id"];
@@ -47,6 +48,7 @@ class PollController extends \App\Template\Controller
         }
 
 
+
         if(isset($_POST["poll-start"]))
         {
 
@@ -68,9 +70,23 @@ class PollController extends \App\Template\Controller
 
         }
 
+        $admin = false;
+
+        if($_SESSION["poll_admin"] == $poll_id)
+        {
+            $admin = true;
+        }
+
 
         if(isset($_POST["question-id"]))
         {
+            if(isset($_COOKIE["finish"]))
+            {
+                if($_COOKIE["finish"] == $poll["id"] && $_SESSION["poll_admin"] != $poll_id){
+                    echo "Du hast an dieser Umfrage bereits teilgenommen!";
+                    die();
+                }
+            }
 
             $old_question = $this->question_repository->findByPoll(["id", $_POST["question-id"]], $poll_id);
 
@@ -110,13 +126,18 @@ class PollController extends \App\Template\Controller
                 $answer = implode("#", $answer);
             }
 
-            if($check_result == true)
+            if(!$admin)
             {
+                if($check_result == true)
+                {
+                    $this->result_repository->update($check_result["id"], $answer);
+                }else
+                {
+                    $this->result_repository->addResult($_SESSION["user_id"], $_GET["poll_id"], $answer, $poll_id);
 
-            }else
-            {
-                $this->result_repository->addResult($_SESSION["user_id"], $_GET["poll_id"], $answer, $poll_id);
+                }
             }
+
         }else
         {
             $next_path = 0;
@@ -167,6 +188,7 @@ class PollController extends \App\Template\Controller
          $this->render("Poll/index",
          [
              "poll" => $poll,
+             "admin" => $admin
          ]);
          die();
         }
