@@ -293,7 +293,7 @@ class AdminController extends \App\Template\Controller
 
             }
 
-            $questions = $this->question_repository->allByPoll($_SESSION["poll_admin"]);
+            $questions = $this->question_repository->allByPosition($_SESSION["poll_admin"]);
 
             $this->render("Admin/Edit", [
                 "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),

@@ -10,9 +10,9 @@ class QuestionRepository extends Repository
     protected $table_name = "questions";
     protected $entity_path = "App\\Entities\\Question";
 
-    public function all_by_position ()
+    public function allByPosition ($poll)
     {
-        $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` WHERE poll = '{$_SESSION['poll_admin']}' ORDER BY position ");
+        $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` WHERE poll = '$poll' ORDER BY position, path ");
         $res = $stmt->fetchAll(PDO::FETCH_CLASS, "{$this->entity_path}");;
         return $res;
     }
