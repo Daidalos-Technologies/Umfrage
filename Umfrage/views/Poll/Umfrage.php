@@ -27,7 +27,7 @@
                         <div id="answers">
                     <?php if($question["answer_type"] === "select"): ?>
                     <div class="text-center">
-                        <select class="form-select answer" aria-label="Default select example" name="answer" required id="answer">
+                        <select class="form-select answer" aria-label="Default select example" name="answer" required">
                             <option disabled selected hidden style="background-color: grey !important">---</option>
                             <?php foreach ($answers as $answer): $answer = (array)$answer;?>
                                 <option data-path="<?php echo $answer["path"]; ?>" value="<?php echo $answer["answer-content"]; ?>"><?php echo $answer["answer-content"]; ?></option>
@@ -49,7 +49,7 @@
                         <?php endforeach; ?>
                         <?php elseif ($question["answer_type"] === "select+self-filling"): ?>
                     <div class="text-center">
-                        <select class="form-select answer" aria-label="Default select example" name="answer" required id="answer">
+                        <select class="form-select answer" aria-label="Default select example" name="answer" required>
                             <option disabled selected hidden style="background-color: grey !important">---</option>
                             <?php foreach ($answers as $answer): $answer = (array)$answer;?>
                                 <?php if($answer["type"] == "self-filling"): ?>
@@ -86,6 +86,13 @@
 
                    <form method="post" id="skip-form" action="./umfrage?poll_id=<?php echo $poll["id"]; ?>">
                        <input hidden name="skip" value="1">
+                       <?php
+                       if($question["answer_type"] != "select")
+                       {
+                           $temp_answer = (array)$answers[0];
+                            echo "<input hidden name='overlapping-path' value='{$temp_answer['path']}' >";
+                       }
+                       ?>
                        <input hidden name="question-id" value="<?php echo $question["id"]; ?>">
                    </form>
 
@@ -111,6 +118,12 @@
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
 <script type="text/javascript">
+
+    $(document).ready(function () {
+        <?php if($question["answer_type"] != "select"): ?>
+        $("#next-path").val(<?php $temp_answer = (array)$answers[0]; echo $temp_answer["path"]; ?>)
+        <?php endif; ?>
+    })
 
     $("#skip").click(function () {
        $("#skip-form").submit();

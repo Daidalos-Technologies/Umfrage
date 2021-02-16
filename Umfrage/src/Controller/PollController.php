@@ -71,11 +71,15 @@ class PollController extends \App\Template\Controller
         }
 
         $admin = false;
-
-        if($_SESSION["poll_admin"] == $poll_id)
+        if(isset($_SESSION["poll_admin"]))
         {
-            $admin = true;
+            if($_SESSION["poll_admin"] == $poll_id)
+            {
+                $admin = true;
+            }
         }
+
+
 
 
         if(isset($_POST["question-id"]))
@@ -91,8 +95,8 @@ class PollController extends \App\Template\Controller
             $old_question = $this->question_repository->findByPoll(["id", $_POST["question-id"]], $poll_id);
 
 
-        if(!isset($_POST["skip"])){
-
+        if(!isset($_POST["skip"]))
+        {
             if(!isset($_POST["answer"]))
             {
                 $question = $old_question;
@@ -128,20 +132,27 @@ class PollController extends \App\Template\Controller
 
             if(!$admin)
             {
+
                 if($check_result == true)
                 {
                     $this->result_repository->update($check_result["id"], $answer);
                 }else
                 {
-                    $this->result_repository->addResult($_SESSION["user_id"], $_GET["poll_id"], $answer, $poll_id);
+                    $this->result_repository->addResult($_SESSION["user_id"], $old_question["id"], $answer, $poll_id);
 
                 }
             }
-
         }else
         {
-            $next_path = 0;
+            if(isset($_POST["overlapping-path"]))
+            {
+                $next_path = $_POST["overlapping-path"];
+            }else
+            {
+                $next_path = 0;
+            }
         }
+
 
         if($old_question["finish"] == 1)
         {

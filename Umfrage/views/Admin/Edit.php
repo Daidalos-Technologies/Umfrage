@@ -122,7 +122,12 @@
                             <label class="form-check-label" for="finish">Beendet Umfrage</label>
                         </div>
                     </div>
-
+                    <?php if($edit_question["answer_type"] != "select"): ?>
+                    <div class="form-group mt-3">
+                        <label class="form-check-label" for="">Übergreifender Pfad</label>
+                        <input name="overlapping-path" value="<?php $temp_answer = (array)$answers[0]; echo $temp_answer["path"]; ?>" class="form-control mt-2">
+                    </div>
+                    <?php endif; ?>
                     <div class="answer-wrapper   <?php if($edit_question["answer_type"] == "self-filling"){echo "d-none";} ?>">
                         <div id="answers" class="mt-3">
                             <label>Antwortmöglichkeiten *</label>

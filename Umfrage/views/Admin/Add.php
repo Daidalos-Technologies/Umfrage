@@ -76,6 +76,9 @@
                 <option value="checkbox+self-filling">Mehrere Antworten Möglich + Individuelle Antwort</option>
             </select>
         </div>
+        <div id="overlapping-wrapper">
+
+        </div>
         <div class="answer-wrapper">
         <div id="answers" class="mt-3">
             <label>Antwortmöglichkeiten *</label>
@@ -146,13 +149,16 @@
     {
 
         $("#answers input").remove();
+        $("#overlapping-path").remove();
 
         if($("#answer-type").val() == "select")
         {
             answers.push(new Answer(counter, true));
+
         }else
         {
             answers.push(new Answer(counter, false));
+            $("<input name='overlapping-path' id='overlapping-path' class='form-control mt-2 mb-3' placeholder='Übergreifender Pfad'/>" ).appendTo("#overlapping-wrapper");
         }
 
         if(this.value === "self-filling")

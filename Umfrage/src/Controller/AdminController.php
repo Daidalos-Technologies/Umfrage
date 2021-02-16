@@ -68,7 +68,6 @@ class AdminController extends \App\Template\Controller
                 "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]])
             ]);
         } else if ($_GET["page"] === "add_questions") {
-
             $error = null;
 
             // Initialise Question Attributes
@@ -106,29 +105,50 @@ class AdminController extends \App\Template\Controller
 
                 $answers = [];
 
+                if (isset($_POST["overlapping-path"])) {
+                    $overlapping_path = $_POST["overlapping-path"];
+                }else
+                {
+                    $overlapping_path = 0;
+                }
                 for ($i = 1; $i <= $answer_counter; $i++) {
-                    if ($i == $answer_counter) {
-                        if ($answer_type == "self-filling" || $answer_type == "select+self-filling" || $answer_type == "checkbox+self-filling") {
-                            array_push($answers, [
-                                "answer-content" => $_POST["answer-$i"],
-                                "type" => "self-filling",
-                                "path" => 0
+                        if ($answer_type === "self-filling" || $answer_type === "select+self-filling" || $answer_type === "checkbox+self-filling") {
+                            if($i == $answer_counter)
+                            {
+                                array_push($answers, [
+                                    "answer-content" => $_POST["answer-$i"],
+                                    "type" => "self-filling",
+                                    "path" => $overlapping_path
 
-                            ]);
-                        } else {
-                            array_push($answers, [
-                                "answer-content" => $_POST["answer-$i"],
-                                "type" => "default",
-                                "path" => 0
+                                ]);
+                            }else
+                            {
+                                array_push($answers, [
+                                    "answer-content" => $_POST["answer-$i"],
+                                    "type" => "default",
+                                    "path" => $overlapping_path
 
-                            ]);
+                                ]);
+                            }
                         }
+                }
 
-                    } else {
+                for ($i = 1; $i <= $answer_counter; $i++)
+                {
+                    if($answer_type == "checkbox")
+                    {
                         array_push($answers, [
                             "answer-content" => $_POST["answer-$i"],
                             "type" => "default",
-                            "path" => 0
+                            "path" => $overlapping_path
+
+                        ]);
+                    }elseif ($answer_type == "select")
+                    {
+                        array_push($answers, [
+                            "answer-content" => $_POST["answer-$i"],
+                            "type" => "default",
+                            "path" => $_POST["pathfinder-$i"]
 
                         ]);
                     }
@@ -239,44 +259,40 @@ class AdminController extends \App\Template\Controller
                 $title = $_POST["title"];
                 $content = $_POST["content"];
                 $position = $_POST["position"];
-                if(isset($_POST["pathfinder"]))
+                if(isset($_POST["overlapping-path"]))
+                {
+                    $pathfinder = $_POST["overlapping-path"];
+                }else
                 {
                     $pathfinder = $_POST["pathfinder"];
                 }
-
                 $path = $_POST["path"];
-                if(isset($_POST["finish"]))
-                {
+                if (isset($_POST["finish"])) {
                     $finish = 1;
-                }else
-                {
+                } else {
                     $finish = 0;
                 }
-                if(isset($_POST["optional"]))
-                {
+                if (isset($_POST["optional"])) {
                     $optional = 1;
-                }else
-                {
+                } else {
                     $optional = 0;
                 }
                 $answers = $_POST["answer"];
                 $temp_answers = [];
                 $temp_counter = 0;
                 foreach ($answers as $answer) {
-                    if(isset($_POST["pathfinder"]))
-                    {
+                    if (isset($_POST["pathfinder"])) {
                         array_push($temp_answers, [
                             "answer-content" => $answer,
                             "type" => "default",
                             "path" => $pathfinder[$temp_counter]
 
                         ]);
-                    }else
-                    {
+                    } else {
                         array_push($temp_answers, [
                             "answer-content" => $answer,
                             "type" => "default",
-                            "path" => 0
+                            "path" => $pathfinder
 
                         ]);
                     }
