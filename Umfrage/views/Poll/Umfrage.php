@@ -27,7 +27,7 @@
                         <div id="answers">
                     <?php if($question["answer_type"] === "select"): ?>
                     <div class="text-center">
-                        <select class="form-select answer" aria-label="Default select example" name="answer" required">
+                        <select class="form-select answer" aria-label="Default select example" name="answer" id="answer" required">
                             <option disabled selected hidden style="background-color: grey !important">---</option>
                             <?php foreach ($answers as $answer): $answer = (array)$answer;?>
                                 <option data-path="<?php echo $answer["path"]; ?>" value="<?php echo $answer["answer-content"]; ?>"><?php echo $answer["answer-content"]; ?></option>
@@ -49,7 +49,7 @@
                         <?php endforeach; ?>
                         <?php elseif ($question["answer_type"] === "select+self-filling"): ?>
                     <div class="text-center">
-                        <select class="form-select answer" aria-label="Default select example" name="answer" required>
+                        <select class="form-select answer" aria-label="Default select example" name="answer" id="answer" required>
                             <option disabled selected hidden style="background-color: grey !important">---</option>
                             <?php foreach ($answers as $answer): $answer = (array)$answer;?>
                                 <?php if($answer["type"] == "self-filling"): ?>

@@ -20,6 +20,8 @@ class AdminController extends \App\Template\Controller
     public function poll_admin()
     {
 
+        // Login Check
+
         if (isset($_POST["logout"])) {
             unset($_SESSION["poll_admin"]);
         }
@@ -99,60 +101,45 @@ class AdminController extends \App\Template\Controller
                 }
 
                 $answer_type = $_POST["answer-type"];
-                $answer_counter = $_POST["answer-counter"];
+
 
                 // Create Answer - Array
 
                 $answers = [];
-
-                if (isset($_POST["overlapping-path"])) {
-                    $overlapping_path = $_POST["overlapping-path"];
-                }else
-                {
-                    $overlapping_path = 0;
-                }
-                for ($i = 1; $i <= $answer_counter; $i++) {
-                        if ($answer_type === "self-filling" || $answer_type === "select+self-filling" || $answer_type === "checkbox+self-filling") {
-                            if($i == $answer_counter)
-                            {
-                                array_push($answers, [
-                                    "answer-content" => $_POST["answer-$i"],
-                                    "type" => "self-filling",
-                                    "path" => $overlapping_path
-
-                                ]);
-                            }else
-                            {
-                                array_push($answers, [
-                                    "answer-content" => $_POST["answer-$i"],
-                                    "type" => "default",
-                                    "path" => $overlapping_path
-
-                                ]);
-                            }
-                        }
-                }
-
-                for ($i = 1; $i <= $answer_counter; $i++)
-                {
-                    if($answer_type == "checkbox")
+                $answer_counter = 0;
+                foreach ($_POST["answer"] as $answer) {
+                    if($_POST["pathfinder"][$answer_counter] == null)
                     {
-                        array_push($answers, [
-                            "answer-content" => $_POST["answer-$i"],
-                            "type" => "default",
-                            "path" => $overlapping_path
-
-                        ]);
-                    }elseif ($answer_type == "select")
+                        $temp_answer =
+                            [
+                                "answer-content" => $answer,
+                                "type" => "default",
+                                "path" => $_POST["overlapping-path"]
+                            ];
+                    }else
                     {
-                        array_push($answers, [
-                            "answer-content" => $_POST["answer-$i"],
-                            "type" => "default",
-                            "path" => $_POST["pathfinder-$i"]
-
-                        ]);
+                        $temp_answer =
+                            [
+                                "answer-content" => $answer,
+                                "type" => "default",
+                                "path" => $_POST["pathfinder"][$answer_counter],
+                                "individual" => true
+                            ];
                     }
+
+                    $answer_counter++;
+                    array_push($answers, $temp_answer);
                 }
+
+                if($answer_type === "select+self-filling" || $answer_type === "checkbox+self-filling")
+                {
+                    array_push($answers,  [
+                        "answer-content" => $_POST["fix-answer"],
+                        "type" => "self-filling",
+                        "path" =>  $_POST["overlapping-path"]
+                    ]);
+                }
+
 
                 // Serialize Answer-Array
 
@@ -259,11 +246,9 @@ class AdminController extends \App\Template\Controller
                 $title = $_POST["title"];
                 $content = $_POST["content"];
                 $position = $_POST["position"];
-                if(isset($_POST["overlapping-path"]))
-                {
+                if (isset($_POST["overlapping-path"])) {
                     $pathfinder = $_POST["overlapping-path"];
-                }else
-                {
+                } else {
                     $pathfinder = $_POST["pathfinder"];
                 }
                 $path = $_POST["path"];

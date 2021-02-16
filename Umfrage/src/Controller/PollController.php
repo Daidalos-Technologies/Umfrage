@@ -41,11 +41,7 @@ class PollController extends \App\Template\Controller
             die();
         }
 
-        if($poll['public'] == 0)
-        {
-            echo "Diese Umfrage ist noch nicht öffentlich! <a href='./index'>Startseite</a>";
-            die();
-        }
+
 
 
 
@@ -121,6 +117,8 @@ class PollController extends \App\Template\Controller
 
             $next_path = $_POST["next-path"];
 
+
+
             if($answer == "self-filling")
             {
                 $answer = $_POST["self-answer"];
@@ -144,6 +142,7 @@ class PollController extends \App\Template\Controller
             }
         }else
         {
+
             if(isset($_POST["overlapping-path"]))
             {
                 $next_path = $_POST["overlapping-path"];
@@ -151,6 +150,7 @@ class PollController extends \App\Template\Controller
             {
                 $next_path = 0;
             }
+
         }
 
 
@@ -172,7 +172,14 @@ class PollController extends \App\Template\Controller
 
             $next_position = $old_question["position"] + 1;
 
+
             $question = $this->question_repository->findNext($next_position, $next_path, $poll_id);
+
+            if($poll['public'] == 0 && $admin == false)
+            {
+                echo "Diese Umfrage ist noch nicht öffentlich! <a href='./index'>Startseite</a>";
+                die();
+            }
 
             if($question)
             {
