@@ -246,7 +246,7 @@ if(isset($last_question))
                     "name": "answer[]"
                 }).appendTo(this.$_col8);
                 this.$_pathFinder = $("<input />").addClass("form-control").attr({
-                    "placeholder": "Individeueller Pfad",
+                    "placeholder": "Individueller Pfad",
                     "name": "pathfinder[]",
                     type: "number"
                 }).appendTo(this.$_col4);

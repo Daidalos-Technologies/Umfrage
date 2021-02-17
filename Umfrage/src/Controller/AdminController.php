@@ -15,6 +15,12 @@ class AdminController extends \App\Template\Controller
         $this->question_repository = $question_repository;
         $this->result_repository = $result_repository;
         $this->poll_repository = $poll_repository;
+
+        if (isset($_SESSION["poll_admin"])) {
+            $this->poll = $this->poll_repository->find(["id", $_SESSION["poll_admin"]]);
+            $this->poll_id = $_SESSION["poll_admin"];
+        }
+
     }
 
     public function poll_admin()
@@ -108,16 +114,14 @@ class AdminController extends \App\Template\Controller
                 $answers = [];
                 $answer_counter = 0;
                 foreach ($_POST["answer"] as $answer) {
-                    if($_POST["pathfinder"][$answer_counter] == null)
-                    {
+                    if ($_POST["pathfinder"][$answer_counter] == null) {
                         $temp_answer =
                             [
                                 "answer-content" => $answer,
                                 "type" => "default",
                                 "path" => $_POST["overlapping-path"]
                             ];
-                    }else
-                    {
+                    } else {
                         $temp_answer =
                             [
                                 "answer-content" => $answer,
@@ -131,12 +135,11 @@ class AdminController extends \App\Template\Controller
                     array_push($answers, $temp_answer);
                 }
 
-                if($answer_type === "select+self-filling" || $answer_type === "checkbox+self-filling")
-                {
-                    array_push($answers,  [
+                if ($answer_type === "select+self-filling" || $answer_type === "checkbox+self-filling") {
+                    array_push($answers, [
                         "answer-content" => $_POST["fix-answer"],
                         "type" => "self-filling",
-                        "path" =>  $_POST["overlapping-path"]
+                        "path" => $_POST["overlapping-path"]
                     ]);
                 }
 
@@ -160,11 +163,9 @@ class AdminController extends \App\Template\Controller
             }
 
 
-            $all_questions = $this->question_repository->all_by_position();
-            $last_question = end($all_questions);
+            $last_question = $this->question_repository->last("position");
 
             $this->render("Admin/Add", [
-                "all_questions" => $all_questions,
                 "last_question" => $last_question,
                 "error" => $error,
                 "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]])
@@ -200,22 +201,80 @@ class AdminController extends \App\Template\Controller
             $questions = $this->question_repository->allByPoll($_SESSION["poll_admin"]);
 
             foreach ($questions as $question) {
-                $question_results = $this->result_repository->allByQuestion($question["id"], $_SESSION["poll_admin"]);
+                $question_results = $this->result_repository->allByQuestion($question["id"]);
+
+                $question_answers = $question["answers"];
+                $question_answers = json_decode($question_answers);
+                $question_answers = (array)$question_answers;
+                $answer_percent = [];
+
+                // Count participants
+
+                $answer_counter = 0;
+
+                if ($question_results) {
+                    foreach ($question_results as $result_array) {
+                        $answer_counter++;
+                    }
+                }
+
+                // Calculate percents for answers
+
+               foreach ($question_answers as $answer) {
+                    $counter = 0;
+                    $answer = (array)$answer;
+
+                    foreach ($question_results as $result) {
+                        $result = (array)$result;
+                        if ($result["answer"] == $answer["answer-content"]) {
+                            $counter++;
+                        }
+                    }
+                    if($counter != 0)
+                    {
+                        $percent = $counter / $answer_counter * 100;
+                    }else
+                    {
+                        $percent = 0;
+                    }
+
+
+                    array_push($answer_percent,
+                        [
+                            "answer" => $answer,
+                            "percent" => $percent
+                        ]);
+                }
 
                 array_push(
                     $results,
                     [
                         "question" => $question,
-                        "question_results" => $question_results
+                        "question_results" => (array)$question_results,
+                        "participants" => $answer_counter,
+                        "answer_percent" => $answer_percent
 
                     ]
                 );
             };
 
+           foreach ($results as $result)
+           {
+               echo $result["question"]["title"]." ".$result["participants"];
+               echo "<br>";
+
+               foreach ($result["answer_percent"] as $percent)
+               {
+                   echo $percent["answer"]["answer-content"].": ".$percent["percent"];
+                   echo "<br>";
+               }
+               echo "<br><br>";
+           }
 
             $this->render("Admin/Results",
                 [
-                    "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]])
+                    "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
+                    "results" => $results
                 ]
             );
         } else if ($_GET["page"] == "edit") {

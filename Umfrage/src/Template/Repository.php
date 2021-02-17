@@ -54,4 +54,17 @@ abstract class Repository
         $res = $stmt->fetchAll(PDO::FETCH_CLASS, "{$this->entity_path}");;
         return $res;
     }
+
+    public function last($col)
+    {
+        $stmt = $this->pdo->prepare("SELECT *
+FROM `{$this->table_name}`
+ORDER BY {$col} DESC
+LIMIT 1");
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
+        return $stmt->fetch(PDO::FETCH_CLASS);
+    }
+
+
 }

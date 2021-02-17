@@ -32,12 +32,12 @@ class ResultRepository extends \App\Template\Repository
         $statement->execute(array("id" => $id, "answer" => $answer));
     }
 
-    public function allByQuestion($question_id, $poll)
+    public function allByQuestion($question_id)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE question_id = :question_id AND poll = :poll");
-        $stmt->execute(["question_id" => $question_id, "poll" => $poll]);
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE question_id = :question_id");
+        $stmt->execute(["question_id" => $question_id]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
-        return $stmt->fetch(PDO::FETCH_CLASS);
+        return $stmt->fetchAll(PDO::FETCH_CLASS);
 
     }
 
