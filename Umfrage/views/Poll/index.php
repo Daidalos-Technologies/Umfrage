@@ -17,7 +17,7 @@
         <p class="welcome-text-content">
             <?php echo nl2br($poll["introduction"]); ?>
         </p>
-        <div class="d-flex justify-content-between align-items-center mt-4">
+        <div class="d-md-flex justify-content-between align-items-center mt-4">
             <?php if(isset($_COOKIE["finish"])): ?>
             <?php if($_COOKIE["finish"] == $poll["id"] && $admin == false): ?>
                 <a class="btn btn-primary" href="./finish.php">Ergebnisse</a>

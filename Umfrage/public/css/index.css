@@ -78,6 +78,38 @@ header .title .title-wrapper
     border-radius: 5px;
 }
 
+@media (max-width: 759px) {
+
+    .welcome-text {
+        font-family: 'Roboto', sans-serif;
+        margin: 5% 5%;
+        padding: 20px;
+        box-shadow: 0 0 10px gray;
+        border-radius: 5px;
+    }
+}
+
+@media (max-width: 759px) {
+
+    .welcome-text {
+        font-family: 'Roboto', sans-serif;
+        margin: 5% 5%;
+        padding: 20px;
+        box-shadow: 0 0 10px gray;
+        border-radius: 5px;
+    }
+}
+
+@media (max-width: 479px) {
+    .welcome-text {
+        font-family: 'Roboto', sans-serif;
+        margin: 5% 5%;
+        padding: 20px;
+        box-shadow: 0 0 10px gray;
+        border-radius: 5px;
+    }
+}
+
 /* Snackbar */
 
 #snackbar {
