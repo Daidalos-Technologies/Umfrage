@@ -171,7 +171,7 @@ class PollController extends \App\Template\Controller
         }
 
             $next_position = $old_question["position"] + 1;
-
+        
 
             $question = $this->question_repository->findNext($next_position, $next_path, $poll_id);
 

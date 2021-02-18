@@ -129,9 +129,12 @@
        $("#skip-form").submit();
     });
 
-    $("#answer option").click(function () {
-      $("#next-path").val(this.getAttribute("data-path"));
+    document.getElementById("answer").addEventListener("change", function (event) {
+        $("#next-path").val(this.selectedOptions[0].getAttribute("data-path"));
+        console.log($("#next-path").val());
     });
+
+    
 
     $("#answer option").click(function () {
         console.log(this);
