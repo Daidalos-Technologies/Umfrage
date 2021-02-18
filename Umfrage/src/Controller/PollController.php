@@ -125,7 +125,20 @@ class PollController extends \App\Template\Controller
             }
             if(is_array($answer))
             {
+                $answer_new = [];
+                $answer_post = $_POST["answer"];
+
+                foreach ($answer_post as $answ)
+                {
+                    if($answ != null)
+                    {
+                        array_push($answer_new, $answ);
+                    }
+                }
+
+                $answer = $answer_new;
                 $answer = implode("#", $answer);
+
             }
 
             if(!$admin)
