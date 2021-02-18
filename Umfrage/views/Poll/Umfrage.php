@@ -131,7 +131,6 @@
 
     document.getElementById("answer").addEventListener("change", function (event) {
         $("#next-path").val(this.selectedOptions[0].getAttribute("data-path"));
-        console.log($("#next-path").val());
     });
 
     
