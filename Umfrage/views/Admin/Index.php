@@ -28,6 +28,7 @@
                 <button class="btn btn-danger">Nicht öffentlich</button>
             </form>
         <?php endif; ?>
+        <p class="text-secondary">Teilnehmer: <?php echo $participants[0]; ?></p>
         <input readonly class="form-control" value="smartpoll.antonhauffe.de/index.php/umfrage?poll_id=<?php echo $poll["id"]; ?>">
     </div>
 

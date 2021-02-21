@@ -50,5 +50,12 @@ class ResultRepository extends \App\Template\Repository
 
     }
 
+    public function count ($poll_id)
+    {
+        $statement = $this->pdo->prepare("SELECT COUNT(DISTINCT user_id) AS anzahl FROM `$this->table_name` WHERE poll = :poll_id");
+        $statement->execute(array("poll_id" => $poll_id));
+        return $statement->fetch();
+    }
+
 
 }
