@@ -9,6 +9,10 @@ class AdminController extends \App\Template\Controller
     private $question_repository;
     private $result_repository;
     private $poll_repository;
+    /**
+     * @var mixed
+     */
+    private $poll_id;
 
     public function __construct($question_repository, $result_repository, $poll_repository)
     {
@@ -44,6 +48,7 @@ class AdminController extends \App\Template\Controller
 
                     $_SESSION["poll_admin"] = $id;
                     $login = true;
+                    $this->poll_id = $id;
 
                 } else {
                     $this->render("Admin/password_checker", [
@@ -213,13 +218,37 @@ class AdminController extends \App\Template\Controller
             $results = [];
             $questions = $this->question_repository->allByPoll($_SESSION["poll_admin"]);
 
+          /*  $questions = [];
+            foreach ($questions_db as $question_db)
+            {
+                $in = false;
+                foreach ($questions as $question)
+                {
+                    if($question["question"]["title"] == $question_db["title"])
+                    {
+                        $in = true;
+                        array_push($question["ids"], $question_db["id"]);
+
+                    }
+                }
+
+                if(!$in)
+                {
+                    array_push($questions, ["question" => $question_db, "ids" => [$question_db["id"]]]);
+                }
+
+            }
+
+            print_r($questions[1]);
+            die();
+*/
+
             foreach ($questions as $question) {
                 $question_results = $this->result_repository->allByQuestion($question["id"]);
 
                 $question_answers = $question["answers"];
                 $question_answers = json_decode($question_answers);
                 $question_answers = (array)$question_answers;
-                echo $question["id"]."<br>";
                 $answer_percent = [];
 
                 // Count participants
@@ -236,7 +265,6 @@ class AdminController extends \App\Template\Controller
                 $tempCounter = 0;
 
                 if ($question_results) {
-                    if ($question["answer_type"] != "self-filling") {
 
                         $result_array = [];
 
@@ -246,47 +274,55 @@ class AdminController extends \App\Template\Controller
                             $result = explode("#", $result["answer"]);
 
                             foreach ($result as $res) {
+                                if ($question["answer_type"] != "self-filling") {
 
-                                foreach ($question_answers as $answer) {
-                                    $answer = (array)$answer;
+                                    foreach ($question_answers as $answer) {
+                                        $answer = (array)$answer;
 
-                                    if ($answer["answer-content"] == $res) {
-                                        $is_in = true;
+                                        if ($answer["answer-content"] == $res) {
+                                            $is_in = true;
+                                        }
                                     }
-                                }
 
-                                if ($is_in) {
+                                    if ($is_in) {
+                                        $result_array["$res"]["result"] = $res;
+                                        if (isset($result_array["$res"]["counter"])) {
+                                            $result_array["$res"]["counter"] += 1;
+                                        } else {
+                                            $result_array["$res"]["counter"] = 1;
+                                        }
+                                    } else {
+                                        if (isset($result_array["other"]["result"])) {
+                                            array_push($result_array["other"]["result"], $res);
+                                        } else {
+                                            if (isset($result_array["other"]["result"])) {
+                                                array_push($result_array["other"]["result"], $res);
+                                            } else {
+                                                $result_array["other"]["result"] = [$res];
+                                            }
+                                        }
+
+                                        if (!isset($result_array["other"]["other"])) {
+                                            $result_array["other"]["other"] = true;
+                                        }
+
+                                        if (isset($result_array["other"]["counter"])) {
+                                            $result_array["other"]["counter"] += 1;
+                                        } else {
+                                            $result_array["other"]["counter"] = 1;
+                                        }
+                                    }
+                                }else
+                                {
                                     $result_array["$res"]["result"] = $res;
                                     if (isset($result_array["$res"]["counter"])) {
                                         $result_array["$res"]["counter"] += 1;
                                     } else {
                                         $result_array["$res"]["counter"] = 1;
                                     }
-                                } else {
-                                    if (isset($result_array["other"]["result"])) {
-                                        array_push($result_array["other"]["result"], $res);
-                                    } else {
-                                        if (isset($result_array["other"]["result"])) {
-                                            array_push($result_array["other"]["result"], $res);
-                                        } else {
-                                            $result_array["other"]["result"] = [$res];
-                                        }
-                                    }
-
-                                    if(!isset($result_array["other"]["other"]))
-                                    {
-                                        $result_array["other"]["other"] = true;
-                                    }
-
-                                    if (isset($result_array["other"]["counter"])) {
-                                        $result_array["other"]["counter"] += 1;
-                                    } else {
-                                        $result_array["other"]["counter"] = 1;
-                                    }
                                 }
+
                             }
-
-
                         }
 
 
@@ -310,22 +346,15 @@ class AdminController extends \App\Template\Controller
 
                         }
 
-
-
-                    }
-
-
-
                     array_push(
                         $results,
                         [
                             "question" => $question,
                             "question_results" => (array)$question_results,
                             "participants" => $participants_counter,
-                            "answer_percent" => $result_array
+                            "result_percent" => $result_array
 
-                        ]
-                    );
+                        ]);
                 } else {
                     array_push(
                         $results,
@@ -341,9 +370,6 @@ class AdminController extends \App\Template\Controller
 
 
             }
-
-            print_r($results);
-            die();
 
 
             $this->render("Admin/Results",
