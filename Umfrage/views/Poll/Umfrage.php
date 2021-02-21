@@ -131,21 +131,17 @@
 
     document.getElementById("answer").addEventListener("change", function (event) {
         $("#next-path").val(this.selectedOptions[0].getAttribute("data-path"));
-        console.log($("#next-path").val());
-    });
 
-    
-
-    $("#answer option").click(function () {
-        console.log(this);
-        if(this.getAttribute("id") == "activate-self-filling")
+        if(this.selectedOptions[0].getAttribute("id") == "activate-self-filling")
         {
             $("<input />").addClass("form-control mt-3").attr({"required": true, "name": "self-answer", "id": "self-answer", "placeholder": "Deine Antwort..."}).appendTo("#answers");
         }else
         {
             $("#self-answer").remove();
         }
-    })
+    });
+
+    
 
 
 
