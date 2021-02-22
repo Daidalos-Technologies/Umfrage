@@ -33,9 +33,22 @@
 
 <body>
 
-<?php include __DIR__ . "/../../Elements/header.php"; ?>
+<?php include __DIR__ . "/../../../Elements/header.php"; ?>
 <div class="container">
+    <div class="text-center mt-3">
+        <p>Ergebnisanzeige</p>
+        <div class="btn-group">
+            <form class="w-auto m-1" action="./poll_admin?page=results" method="post">
+                <input hidden name="type" value="overview">
+                <button class="btn btn-secondary active">Übersicht</button>
+            </form>
+            <form class="w-auto m-1" action="./poll_admin?page=results" method="post">
+                <input hidden name="type" value="path-tree">
+                <button class="btn btn-secondary">Pfad-Baum</button>
+            </form>
 
+        </div>
+    </div>
 
     <?php foreach ($results as $result): ?>
         <div class="results">
@@ -64,7 +77,7 @@
 
 
 </div>
-<?php include __DIR__ . "/../../Elements/src.php"; ?>
+<?php include __DIR__ . "/../../../Elements/src.php"; ?>
 <script type="text/javascript">
 
 </script>
