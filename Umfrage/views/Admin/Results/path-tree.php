@@ -53,8 +53,8 @@
             <h2 class="text-center">Position <b><?php echo $result["position"]; ?></b></h2>
             <div class="questions d-flex justify-content-center">
                 <?php foreach ($result["questions"] as $question): ?>
-                    <div class="card question text-center">
-                        <div class="card-header">
+                    <div class="card question text-center ">
+                        <div class="card-header <?php if($question["question"]["finish"] == 1){echo "bg-danger";} ?>">
                             <b>Pfad <?php echo $question["question"]["path"]; ?></b>
                         </div>
                         <div class="card-body" style="overflow: scroll">
@@ -63,7 +63,14 @@
                             <div class="results">
                                 <?php foreach ($question["answers"] as $answer): ?>
                                     <div class="result" style="width: <?php echo $answer["percent"]; ?>%">
-                                        <p><?php echo $answer["counter"]; ?></p></div>
+                                        <?php if(isset($answer["counter"])): ?>
+                                        <p><?php echo $answer["counter"]; ?></p>
+                                        <?php elseif(isset($answer["other"])): ?>
+                                            <p><?php echo sizeof($answer["answers"]); ?></p>
+                                        <?php else: ?>
+                                            <p><?php echo 0; ?></p>
+                                        <?php endif; ?>
+                                    </div>
                                     <?php if (isset($answer["other"])): ?>
                                         <p class="m-1">Andere</p>
                                     <?php else: ?>
