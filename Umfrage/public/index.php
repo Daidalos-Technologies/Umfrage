@@ -36,6 +36,11 @@ $routes =
         [
             "controller" => "pageController",
             "method" => "index"
+        ],
+        "/impressum" =>
+        [
+            "controller" => "pageController",
+            "method" => "impressum"
         ]
     ];
 

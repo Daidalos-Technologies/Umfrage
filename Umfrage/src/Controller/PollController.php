@@ -8,12 +8,18 @@ class PollController extends \App\Template\Controller
     private $question_repository;
     private $result_repository;
     private $pollRepository;
+    /**
+     * @var false
+     */
+    private $admin;
 
     public function __construct($question_repository, $result_repository, $poll_repository)
     {
         $this->question_repository = $question_repository;
         $this->result_repository = $result_repository;
         $this->pollRepository = $poll_repository;
+
+        $this->admin = false;
     }
     public function poll()
     {
@@ -41,8 +47,20 @@ class PollController extends \App\Template\Controller
             die();
         }
 
+        if(isset($_SESSION["poll_admin"]))
+        {
+            if($_SESSION["poll_admin"] == $poll_id)
+            {
+                $this->admin = true;
+            }
+        }
 
 
+        if($poll['public'] == 0 && $this->admin == false)
+        {
+            echo "Diese Umfrage ist noch nicht öffentlich! <a href='./index'>Startseite</a>";
+            die();
+        }
 
 
         if(isset($_POST["poll-start"]))
@@ -65,16 +83,6 @@ class PollController extends \App\Template\Controller
             die();
 
         }
-
-        $admin = false;
-        if(isset($_SESSION["poll_admin"]))
-        {
-            if($_SESSION["poll_admin"] == $poll_id)
-            {
-                $admin = true;
-            }
-        }
-
 
 
 
@@ -219,7 +227,7 @@ class PollController extends \App\Template\Controller
          $this->render("Poll/index",
          [
              "poll" => $poll,
-             "admin" => $admin
+             "admin" => $this->admin
          ]);
          die();
         }

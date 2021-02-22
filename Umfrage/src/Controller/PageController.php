@@ -24,4 +24,13 @@ class PageController extends \App\Template\Controller
         $this->render("index", []);
 
     }
+
+    public function impressum()
+    {
+
+        $this->render("impressum", []);
+
+    }
+
+
 }

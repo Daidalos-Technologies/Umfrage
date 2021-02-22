@@ -31,6 +31,13 @@
             background-color: dodgerblue;
         }
 
+        .result p
+        {
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px;
+        }
+
     </style>
 
 </head>
@@ -62,7 +69,7 @@
 
                             <div class="results">
                                 <?php foreach ($question["answers"] as $answer): ?>
-                                    <div class="result" style="width: <?php echo $answer["percent"]; ?>%">
+                                    <div class="result d-flex justify-content-center align-items-center" style="width: <?php echo $answer["percent"]; ?>%">
                                         <?php if(isset($answer["counter"])): ?>
                                         <p><?php echo $answer["counter"]; ?></p>
                                         <?php elseif(isset($answer["other"])): ?>
