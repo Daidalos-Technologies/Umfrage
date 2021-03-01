@@ -149,7 +149,7 @@ class PollController extends \App\Template\Controller
 
             }
 
-            if(!$admin)
+            if(!$this->admin)
             {
 
                 if($check_result == true)
