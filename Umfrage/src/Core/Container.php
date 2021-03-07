@@ -3,12 +3,14 @@
 namespace App\Core;
 
 use App\Controller\PageController as PageController;
+use App\Repositories\AnswerRepository;
 use App\Repositories\PollRepository as PollRepository;
 use PDO;
 use App\Controller\PollController as PollController;
 use App\Repositories\QuestionRepository as QuestionRepository;
 use App\Controller\AdminController as AdminController;
 use App\Repositories\ResultRepository as ResultRepository;
+use App\Repositories\PathRepository as PathRepository;
 
 class Container
 {
@@ -42,10 +44,14 @@ class Container
                     return new QuestionRepository($this->make("pdo"));
                 }, "resultRepository" => function () {
                 return new ResultRepository($this->make("pdo"));
+            }, "pathRepository" => function () {
+                return new PathRepository($this->make("pdo"));
+            }, "answerRepository" => function () {
+                return new AnswerRepository($this->make("pdo"));
             }, "adminController" => function () {
-                return new AdminController($this->make("questionRepository"), $this->make("resultRepository"), $this->make("pollRepository"));
+                return new AdminController($this->make("questionRepository"), $this->make("resultRepository"), $this->make("pollRepository"), $this->make("pathRepository"), $this->make("answerRepository"));
             },
-                "pollRepository" => function() {
+                "pollRepository" => function () {
                     return new PollRepository($this->make("pdo"));
                 }, "pageController" => function () {
                 return new PageController($this->make("questionRepository"), $this->make("resultRepository"), $this->make("pollRepository"));

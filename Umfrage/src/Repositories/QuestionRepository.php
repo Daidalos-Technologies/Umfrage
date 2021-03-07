@@ -17,10 +17,18 @@ class QuestionRepository extends Repository
         return $res;
     }
 
-    public function addQuestion($title, $content, $position, $optional, $finish, $path, $answers, $answer_type, $poll)
+    public function add($title, $content, $position, $optional, $finish, $path, $answers, $answer_type, $poll)
     {
         $stmt = $this->pdo->prepare("INSERT INTO `$this->table_name` (`title`, `content`, `position`, `optional`, `finish`, `path`, `answers`, `answer_type`, `poll`) VALUES (:title, :content, :position, :optional, :finish, :path, :answers, :answer_type, :poll)");
         $stmt->execute(["title" => $title, "content" => $content, "position" => $position, "optional" => $optional, "finish" => $finish, "path" => $path, "answers" => $answers, "answer_type" => $answer_type, "poll" => $poll ]);
+        return $this->pdo->lastInsertId();
+    }
+
+    public function updateSpec($id, $params)
+    {
+
+        $statement = $this->pdo->prepare("UPDATE `$this->table_name` SET {$params[0]} = :placeholder WHERE id = :id");
+        $statement->execute(array("placeholder" => $params[1], "id" => $id));
     }
 
     public function check($position, $path)

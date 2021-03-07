@@ -13,6 +13,7 @@ class Question extends Entity
        public $position;
        public $optional;
        public $path;
+       public $path_position;
 
 
 }
