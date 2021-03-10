@@ -102,6 +102,24 @@ class AdminController extends \App\Template\Controller
             }
 
             foreach ($this->question_repository->allByPosition($this->poll_id) as $question) {
+                $path = $question["path"];
+                $path = $this->path_repository->findByPoll(["number", $path], $this->poll_id);
+
+                $is_in = false;
+
+                if($path)
+                {
+                    array_push($questions[$path["position"]][$path["number"]]["questions"], $question);
+                }else
+                {
+                    $questions[$question["position"]][$question["path"]]["questions"] = [$question];
+                }
+
+
+
+
+            }
+          /*  foreach ($this->question_repository->allByPosition($this->poll_id) as $question) {
                 $position = $question["position"];
                 $path = $question["path"];
 
@@ -114,7 +132,7 @@ class AdminController extends \App\Template\Controller
                 } else {
                     $questions[$position][$path]["questions"] = [$question];
                 }
-            }
+            }*/
 
 
             /*foreach ($questions as $position => $position_array) {
@@ -131,6 +149,11 @@ class AdminController extends \App\Template\Controller
                 }
             }*/
 
+            asort($questions);
+
+            foreach ($questions as $paths){
+                asort($paths);
+            }
 
             $this->render("Admin/Manage",
                 [

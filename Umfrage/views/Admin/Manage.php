@@ -12,15 +12,16 @@
     <style>
 
         .position {
+            display: flex;
             padding: 25px 0;
-            justify-content: space-around;
+            justify-content: center;
             text-align: center;
         }
 
         .question {
-            margin: 10px;
             width: 25rem !important;
             max-height: 200px;
+            margin-bottom: 20px;
         }
 
         .path {
@@ -31,13 +32,14 @@
         }
 
         .path-wrapper {
-            display: flex;
+
         }
 
         .path-header {
-            height: 50px;
-            width: 100%;
+
             border: 2px solid black;
+            width: 25rem;
+            padding: 10px 0;
             font-size: 25px;
         }
 
@@ -57,14 +59,19 @@
         }
 
         .new_question {
-            margin: 10px;
-            width: 25rem !important;
+            margin: 10px 0;
+            width: 25rem;
             height: 125px;
             border: 2px solid rgba(128, 128, 128, 0.5);
-            font-size: 67.5px;
+            font-size: 1.5rem;
             color: rgba(128, 128, 128, 0.5);
             cursor: pointer;
             transition: .3s;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
 
         }
 
@@ -92,60 +99,70 @@
 </form>
 <div class="container">
 
-    <?php if (!empty($questions)): ?>
-
-    <?php foreach ($questions as $position => $position_array): ?>
-    <section class="position ">
-        <h3><?php echo $position; ?>. Frage</h3>
-        <div class="path-wrapper m-5">
-
-            <?php foreach ($position_array as $path => $path_obj): ?>
-                <?php if ($path == 0): ?>
-                <div class="path">
-                    <div class="path-header">
-                        Standard Pfad
-                    </div>
-
-                    <?php foreach ($path_obj["questions"] as $question): ?>
-                        <div class="path-content">
-                            <div class="card question">
-                                <div class="card-header">Position <?php echo $question["position"]; ?></div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo $question["title"]; ?></h5>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
+    <?php $position_ = 0; if (!empty($questions)): ?>
+<div class="path-wrapper">
+        <?php foreach ($questions as $position => $paths): $position_ = $position; ?>
+            <div class="position">
+                <?php foreach ($paths as $path_number => $path): ?>
+                    <?php if ($path_number == 0): $question = $path["questions"][0];?>
+                    <div class="path">
+                        <div class="card text-center question">
+                            <div class="card-header">
+                                <?php echo $question["position"]; ?>. Frage
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
                             </div>
                         </div>
-                    <?php endforeach; ?>
-                   
-                </div>
-                <?php else: ?>
+                    </div>
+
+                    <?php else: ?>
+                    <div class="path text-center">
+                        <div class="path-header">Pfad <b><?php echo $path_number; ?></b></div>
+                        <div class="path-content text-center">
+                            <?php $question_counter = 0; foreach ($path["questions"] as $question): $question_counter++;?>
+                                <div class="card text-center question">
+                                    <div class="card-header">
+                                        <?php echo $question["position"]; ?>. Frage
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Special title treatment</h5>
+                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                            <div class="new_question" data-position="<?php echo $question_counter+1; ?>" data-path="<?php echo $path_number; ?>">
+                                Frage Hinzufügen
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <?php if($position != 1): ?>
                     <div class="path">
-                        <div class="path-header">
-                            Pfad <?php echo $path["path"]["number"]; ?>
+                        <div class="new_question" data-position="<?php echo $question_counter+1; ?>" data-path="<?php echo $path_number; ?>">
+                            Pfad Hinzufügen
                         </div>
                     </div>
                 <?php endif; ?>
-
-            <?php endforeach; ?>
-            <div class="path">
-                <div class="new-path-header">
-                    +
-                </div>
             </div>
-        </div>
-    </section>
-<?php endforeach; ?>
 
-<?php else: ?>
-    <section class="position">
-        <h3>1. Frage</h3>
-        <div class="new_question" data-position="1" data-path="0">
-            +
+        <?php endforeach; ?>
+</div>
+        <div class="new_question" style="margin: 0 auto" data-position="<?php echo $position_+1; ?>" data-path="0">
+            Neue Frage
         </div>
-    </section>
+    <?php else: ?>
+        <section class="position">
+            <h3>1. Frage</h3>
+            <div class="new_question" data-position="1" data-path="0">
+                +
+            </div>
+        </section>
 
-<?php endif; ?>
+    <?php endif; ?>
 </div>
 <?php include __DIR__ . "/../../Elements/src.php"; ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"

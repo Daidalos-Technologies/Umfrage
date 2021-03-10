@@ -16,7 +16,7 @@
         <div class="poll-container">
             <div class="card">
                 <div class="card-header text-center">
-                    Umfrage - Kryptowährung
+                    Umfrage - <?php echo $poll["title"]; ?>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title text-center"><?php echo $question["title"]; ?></h5>
