@@ -11,5 +11,7 @@ class Result extends \App\Template\Entity
     public $user_id;
     public $question_id;
     public $answer;
+    public $finish;
+    public $poll;
 
 }

@@ -32,9 +32,25 @@ class ResultRepository extends \App\Template\Repository
         $statement->execute(array("id" => $id, "answer" => $answer));
     }
 
+    public function updateFinish($id)
+    {
+
+        $statement = $this->pdo->prepare("UPDATE `$this->table_name` SET finish = :finish WHERE user_id = :id");
+        $statement->execute(array("id" => $id, "finish" => 1));
+    }
+
+    public function allByPoll($poll)
+    {
+        $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` WHERE poll = '$poll'");
+        $res = $stmt->fetchAll(PDO::FETCH_CLASS, "{$this->entity_path}");;
+        return $res;
+    }
+
+
+
     public function allByQuestion($question_id)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE question_id = :question_id");
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE question_id = :question_id AND finish = 1");
         $stmt->execute(["question_id" => $question_id]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
         return $stmt->fetchAll(PDO::FETCH_CLASS);
@@ -52,7 +68,7 @@ class ResultRepository extends \App\Template\Repository
 
     public function count ($poll_id)
     {
-        $statement = $this->pdo->prepare("SELECT COUNT(DISTINCT user_id) AS anzahl FROM `$this->table_name` WHERE poll = :poll_id");
+        $statement = $this->pdo->prepare("SELECT COUNT(DISTINCT user_id) AS anzahl FROM `$this->table_name` WHERE poll = :poll_id AND finish = 1");
         $statement->execute(array("poll_id" => $poll_id));
         return $statement->fetch();
     }

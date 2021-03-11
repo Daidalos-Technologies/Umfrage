@@ -371,6 +371,29 @@ class AdminController extends \App\Template\Controller
 
             }*/
 
+        /*    $finish_array = [];
+
+            foreach ($this->question_repository->allByPoll($this->poll_id) as $question)
+            {
+                if($question["finish"] == 1)
+                {
+                    array_push($finish_array, $question["id"]);
+                }
+            }
+
+            foreach ($this->result_repository->allByPoll($this->poll_id) as $result)
+            {
+
+                foreach ($finish_array as $question_id)
+                {
+                    if($result["question_id"] == $question_id)
+                    {
+                        $this->result_repository->updateFinish($result["user_id"]);
+                    }
+                }
+
+            } */
+
 
             foreach ($questions as $question)
             {
