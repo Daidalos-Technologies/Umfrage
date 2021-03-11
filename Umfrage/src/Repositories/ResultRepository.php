@@ -12,7 +12,7 @@ class ResultRepository extends \App\Template\Repository
 
     public function checkResult($user_id, $question_id, $poll)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE user_id = '$user_id' AND question_id = '$question_id' AND poll = '$poll'");
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE user_id = '$user_id' AND question_id = '$question_id' AND poll = '$poll' AND finish = 1");
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
         return $stmt->fetch(PDO::FETCH_CLASS);
@@ -41,7 +41,7 @@ class ResultRepository extends \App\Template\Repository
 
     public function allByPoll($poll)
     {
-        $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` WHERE poll = '$poll'");
+        $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` WHERE poll = '$poll' AND finish = 1");
         $res = $stmt->fetchAll(PDO::FETCH_CLASS, "{$this->entity_path}");;
         return $res;
     }
@@ -59,7 +59,7 @@ class ResultRepository extends \App\Template\Repository
 
     public function allByUser($user_id, $poll)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE user_id = :user_id AND poll = :poll");
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE user_id = :user_id AND poll = :poll AND finish = 1");
         $stmt->execute(["user_id" => $user_id, "poll" => $poll]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
         return $stmt->fetch(PDO::FETCH_CLASS);
