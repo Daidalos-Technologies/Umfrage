@@ -191,11 +191,13 @@ class PollController extends \App\Template\Controller
         }
 
             $next_position = $old_question["position"] + 1;
+
+
         
 
             $question = $this->question_repository->findNext($next_position, $next_path, $poll_id);
 
-            if($poll['public'] == 0 && $admin == false)
+            if($poll['public'] == 0 && $this->admin == false)
             {
                 echo "Diese Umfrage ist noch nicht öffentlich! <a href='./index'>Startseite</a>";
                 die();

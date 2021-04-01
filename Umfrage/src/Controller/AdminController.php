@@ -371,7 +371,7 @@ class AdminController extends \App\Template\Controller
 
             }*/
 
-          /*  $finish_array = [];
+         /*  $finish_array = [];
 
             foreach ($this->question_repository->allByPoll($this->poll_id) as $question)
             {
@@ -381,7 +381,7 @@ class AdminController extends \App\Template\Controller
                 }
             }
 
-            foreach ($this->result_repository->allByPoll($this->poll_id) as $result)
+            foreach ($this->result_repository->allByPollNotFinish($this->poll_id) as $result)
             {
 
                 foreach ($finish_array as $question_id)
