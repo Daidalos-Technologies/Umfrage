@@ -39,6 +39,13 @@ class ResultRepository extends \App\Template\Repository
         $statement->execute(array("id" => $id, "finish" => 1));
     }
 
+    public function updateFinishToNull($id)
+    {
+
+        $statement = $this->pdo->prepare("UPDATE `$this->table_name` SET finish = :finish WHERE user_id = :id");
+        $statement->execute(array("id" => $id, "finish" => 0));
+    }
+
     public function allByPoll($poll)
     {
         $stmt = $this->pdo->query("SELECT * FROM `{$this->table_name}` WHERE poll = '$poll' AND finish = 1");

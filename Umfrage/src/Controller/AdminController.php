@@ -394,6 +394,42 @@ class AdminController extends \App\Template\Controller
 
             } */
 
+            $start_array = [];
+
+            foreach ($this->question_repository->allByPoll($this->poll_id) as $question)
+            {
+                if($question["position"] == 1)
+                {
+                    array_push($start_array, $question["id"]);
+                }
+            }
+
+            $checked_users = [];
+
+            foreach ($this->result_repository->allByPollNotFinish($this->poll_id) as $result)
+            {
+
+                if(!array_search($result["user_id"], $checked_users))
+                {
+                    array_push($checked_users, $result["user_id"]);
+                    $is_in = false;
+
+                    foreach ($this->result_repository->allByUser($result["user_id"], $this->poll_id) as $user_result)
+                    {
+                        $check_start_question = array_search($user_result["question_id"], $start_array);
+                        if(array_search($user_result["question_id"], $start_array))
+                        {
+                            $is_in = true;
+                        }
+                    }
+
+                    if($is_in)
+                    {
+                        $this->result_repository->updateFinishToNull($result["user_id"]);
+                    }
+                }
+
+            }
 
             foreach ($questions as $question)
             {
