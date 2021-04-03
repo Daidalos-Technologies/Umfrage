@@ -38,6 +38,13 @@
             text-shadow: 1px;
         }
 
+        .other
+        {
+            cursor: pointer;
+
+
+        }
+
     </style>
 
 </head>
@@ -46,6 +53,7 @@
 
 <?php include __DIR__ . "/../../../Elements/header.php"; ?>
 <div class="container">
+
     <div class="text-center mb-5 mt-3">
         <p>Ergebnisanzeige</p>
         <div class="btn-group">
@@ -69,7 +77,7 @@
 
                             <div class="results">
                                 <?php foreach ($question["answers"] as $answer): ?>
-                                    <div class="result d-flex justify-content-center align-items-center" style="width: <?php echo $answer["percent"]; ?>%">
+                                    <div class="result <?php if (isset($answer["other"])){echo "other bg-success";} ?> d-flex justify-content-center align-items-center"  <?php if (isset($answer["other"])){echo "id='{$question["question"]["id"]}'";} ?> style="width: <?php echo $answer["percent"]; ?>%">
                                         <?php if(isset($answer["counter"])): ?>
                                         <p><?php echo $answer["counter"]; ?></p>
                                         <?php elseif(isset($answer["other"])): ?>
@@ -79,6 +87,32 @@
                                         <?php endif; ?>
                                     </div>
                                     <?php if (isset($answer["other"])): ?>
+
+                                        <button hidden type="button" id="button-<?php echo $question["question"]["id"]; ?>" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-<?php echo $question["question"]["id"]; ?>"></button>
+
+                                        <div class="modal fade" id="modal-<?php echo $question["question"]["id"]; ?>"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel"><?php echo $question["question"]["title"]; ?></h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <h4 class="text-center mb-3">Andere Antworten</h4>
+                                                        <ul class="list-group list-group-flush">
+                                                            <?php foreach ($answer["answers"] as $answ): ?>
+                                                                <li class="list-group-item"><?php echo $answ; ?></li>
+                                                            <?php endforeach; ?>
+                                                        </ul>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <p class="m-1">Andere</p>
                                     <?php else: ?>
                                         <?php if (isset($answer["answer"])): ?>
@@ -105,7 +139,10 @@
 </div>
 <?php include __DIR__ . "/../../../Elements/src.php"; ?>
 <script type="text/javascript">
-
+$(".other").click(function () {
+    let id = $(this).attr("id");
+    $("#button-"+id).click();
+})
 </script>
 </body>
 </html>
