@@ -370,8 +370,10 @@ class AdminController extends \App\Template\Controller
 
 
             }*/
-
-         /*  $finish_array = [];
+/*
+ /* remove not finished */
+            /*
+           $finish_array = [];
 
             foreach ($this->question_repository->allByPoll($this->poll_id) as $question)
             {
@@ -392,8 +394,10 @@ class AdminController extends \App\Template\Controller
                     }
                 }
 
-            } */
+            }
 
+
+            /* remove not started /*
             $start_array = [];
 
             foreach ($this->question_repository->allByPoll($this->poll_id) as $question)
@@ -404,32 +408,37 @@ class AdminController extends \App\Template\Controller
                 }
             }
 
+
             $checked_users = [];
 
-            foreach ($this->result_repository->allByPollNotFinish($this->poll_id) as $result)
+            foreach ($this->result_repository->allByPoll($this->poll_id) as $result)
             {
 
                 if(!array_search($result["user_id"], $checked_users))
                 {
                     array_push($checked_users, $result["user_id"]);
                     $is_in = false;
-
                     foreach ($this->result_repository->allByUser($result["user_id"], $this->poll_id) as $user_result)
                     {
-                        $check_start_question = array_search($user_result["question_id"], $start_array);
-                        if(array_search($user_result["question_id"], $start_array))
+                        $user_result = (array)$user_result;
+                        if(array_search($user_result["question_id"], $start_array) !== false)
                         {
                             $is_in = true;
                         }
                     }
 
-                    if($is_in)
+                    if(!$is_in)
                     {
+                        echo "update:".$result["user_id"]."<br>";
                         $this->result_repository->updateFinishToNull($result["user_id"]);
                     }
                 }
 
             }
+
+            echo "checked users: ".sizeof($checked_users);
+            */
+
 
             foreach ($questions as $question)
             {
