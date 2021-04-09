@@ -6,13 +6,14 @@ namespace App\Controller;
 
 class AdminController extends \App\Template\Controller
 {
-    private $question_repository;
-    private $result_repository;
+    public $question_repository;
+    public $result_repository;
     private $poll_repository;
     /**
      * @var mixed
      */
-    private $poll_id;
+    public $poll_id;
+    public $poll;
 
     public function __construct($question_repository, $result_repository, $poll_repository)
     {
@@ -215,413 +216,8 @@ class AdminController extends \App\Template\Controller
 
         } else if ($_GET["page"] == "results") {
 
-            $results = [];
-            $questions = $this->question_repository->allByPosition($_SESSION["poll_admin"]);
+            require "result_functions.php";
 
-          /*  $questions = [];
-            foreach ($questions_db as $question_db)
-            {
-                $in = false;
-                foreach ($questions as $question)
-                {
-                    if($question["question"]["title"] == $question_db["title"])
-                    {
-                        $in = true;
-                        array_push($question["ids"], $question_db["id"]);
-
-                    }
-                }
-
-                if(!$in)
-                {
-                    array_push($questions, ["question" => $question_db, "ids" => [$question_db["id"]]]);
-                }
-
-            }
-
-            print_r($questions[1]);
-            die();
-*/
-
-         /*   foreach ($questions as $question) {
-                $question_results = $this->result_repository->allByQuestion($question["id"]);
-
-                $question_answers = $question["answers"];
-                $question_answers = json_decode($question_answers);
-                $question_answers = (array)$question_answers;
-                $answer_percent = [];
-
-                // Count participants
-
-                $participants_counter = 0;
-
-                if ($question_results) {
-                    foreach ($question_results as $result_array) {
-                        $participants_counter++;
-                    }
-                }
-
-                // Calculate percents for answers
-                $tempCounter = 0;
-
-                if ($question_results) {
-
-                        $result_array = [];
-
-                        foreach ($question_results as $result) {
-                            $is_in = false;
-                            $result = (array)$result;
-                            $result = explode("#", $result["answer"]);
-
-                            foreach ($result as $res) {
-                                if ($question["answer_type"] != "self-filling") {
-
-                                    foreach ($question_answers as $answer) {
-                                        $answer = (array)$answer;
-
-                                        if ($answer["answer-content"] == $res) {
-                                            $is_in = true;
-                                        }
-                                    }
-
-                                    if ($is_in) {
-                                        $result_array["$res"]["result"] = $res;
-                                        if (isset($result_array["$res"]["counter"])) {
-                                            $result_array["$res"]["counter"] += 1;
-                                        } else {
-                                            $result_array["$res"]["counter"] = 1;
-                                        }
-                                    } else {
-                                        if (isset($result_array["other"]["result"])) {
-                                            array_push($result_array["other"]["result"], $res);
-                                        } else {
-                                            if (isset($result_array["other"]["result"])) {
-                                                array_push($result_array["other"]["result"], $res);
-                                            } else {
-                                                $result_array["other"]["result"] = [$res];
-                                            }
-                                        }
-
-                                        if (!isset($result_array["other"]["other"])) {
-                                            $result_array["other"]["other"] = true;
-                                        }
-
-                                        if (isset($result_array["other"]["counter"])) {
-                                            $result_array["other"]["counter"] += 1;
-                                        } else {
-                                            $result_array["other"]["counter"] = 1;
-                                        }
-                                    }
-                                }else
-                                {
-                                    $result_array["$res"]["result"] = $res;
-                                    if (isset($result_array["$res"]["counter"])) {
-                                        $result_array["$res"]["counter"] += 1;
-                                    } else {
-                                        $result_array["$res"]["counter"] = 1;
-                                    }
-                                }
-
-                            }
-                        }
-
-
-                        $result_amount = 0;
-
-                        foreach ($result_array as $result)
-                        {
-                            $result_amount += $result["counter"];
-                        }
-
-                        foreach ($result_array as $result)
-                        {
-                            if(isset($result["other"]))
-                            {
-                                $result_array["other"]["percent"] = ($result["counter"] / $result_amount) * 100;
-                            }else
-                            {
-                                $result_array[$result["result"]]["percent"] = ($result["counter"] / $result_amount) * 100;
-                            }
-
-
-                        }
-
-                    array_push(
-                        $results,
-                        [
-                            "question" => $question,
-                            "question_results" => (array)$question_results,
-                            "participants" => $participants_counter,
-                            "result_percent" => $result_array
-
-                        ]);
-                } else {
-                    array_push(
-                        $results,
-                        [
-                            "question" => $question,
-                            "question_results" => (array)$question_results,
-                            "participants" => 0,
-                            "answer_percent" => false
-
-                        ]
-                    );
-                }
-
-
-            }*/
-/*
- /* remove not finished */
-            /*
-           $finish_array = [];
-
-            foreach ($this->question_repository->allByPoll($this->poll_id) as $question)
-            {
-                if($question["finish"] == 1)
-                {
-                    array_push($finish_array, $question["id"]);
-                }
-            }
-
-            foreach ($this->result_repository->allByPollNotFinish($this->poll_id) as $result)
-            {
-
-                foreach ($finish_array as $question_id)
-                {
-                    if($result["question_id"] == $question_id)
-                    {
-                        $this->result_repository->updateFinish($result["user_id"]);
-                    }
-                }
-
-            }
-
-
-            /* remove not started /*
-            $start_array = [];
-
-            foreach ($this->question_repository->allByPoll($this->poll_id) as $question)
-            {
-                if($question["position"] == 1)
-                {
-                    array_push($start_array, $question["id"]);
-                }
-            }
-
-
-            $checked_users = [];
-
-            foreach ($this->result_repository->allByPoll($this->poll_id) as $result)
-            {
-
-                if(!array_search($result["user_id"], $checked_users))
-                {
-                    array_push($checked_users, $result["user_id"]);
-                    $is_in = false;
-                    foreach ($this->result_repository->allByUser($result["user_id"], $this->poll_id) as $user_result)
-                    {
-                        $user_result = (array)$user_result;
-                        if(array_search($user_result["question_id"], $start_array) !== false)
-                        {
-                            $is_in = true;
-                        }
-                    }
-
-                    if(!$is_in)
-                    {
-                        echo "update:".$result["user_id"]."<br>";
-                        $this->result_repository->updateFinishToNull($result["user_id"]);
-                    }
-                }
-
-            }
-
-            echo "checked users: ".sizeof($checked_users);
-            */
-
-
-            foreach ($questions as $question)
-            {
-
-                    $results[$question["position"]]["position"] = $question["position"];
-                    $results[$question["position"]]["questions"][$question["id"]] = [
-                        "question" => $question
-                    ];
-
-                    $question_entry = $results[$question["position"]]["questions"][$question["id"]];
-
-
-                $question_results = $this->result_repository->allByQuestion($question["id"]);
-
-                // Count participants
-
-                $participants_counter = 0;
-
-                if ($question_results) {
-                    foreach ($question_results as $result_array) {
-                        $participants_counter++;
-                    }
-                }
-
-                $question_entry["participants"] = $participants_counter;
-
-                // Get question_answers
-
-
-
-                $question_entry["answers"] = [];
-
-                if($question["answer_type"] != "self-filling")
-                {
-
-                    $question_answers = $question["answers"];
-                    $question_answers = json_decode($question_answers);
-                    $question_answers = (array)$question_answers;
-
-                    foreach ($question_answers as $answer)
-                    {
-                        $answer = (array)$answer;
-                        if($answer["type"] != "self-filling")
-                        {
-                            $question_entry["answers"][$answer["answer-content"]] =
-                                [
-                                    "answer" => $answer
-                                ];
-                        }
-
-                    }
-
-
-                }
-
-
-                if($question_results)
-                {
-                    $question_entry["results"] = true;
-
-                    foreach ($question_results as $result)
-                    {
-
-                        $result = (array)$result;
-                        $result = explode("#", $result["answer"]);
-
-                        if($question["answer_type"] != "self-filling")
-                        {
-
-                            foreach ($result as $res)
-                            {
-                                $is_in = false;
-
-                                if(strlen($res) != 0){
-                                    foreach ($question_entry["answers"] as $answer)
-                                    {
-                                        if(!isset($answer["other"])){
-                                            $answer_content = $answer["answer"]["answer-content"];
-                                            if($answer_content == $res)
-                                            {
-                                                $is_in = $answer;
-                                            }else
-                                            {
-                                                $other = $res;
-                                            }
-
-                                        }
-
-                                    }
-                                }
-
-
-
-                                if($is_in)
-                                {
-
-                                    $is_in = $is_in["answer"];
-
-                                    if(isset($question_entry["answers"][$is_in["answer-content"]]["counter"]))
-                                    {
-                                        $question_entry["answers"][$is_in["answer-content"]]["counter"] += 1;
-                                    }else
-                                    {
-                                        $question_entry["answers"][$is_in["answer-content"]]["counter"] = 1;
-                                    }
-                                }else
-                                {
-
-                                    if(isset($question_entry["answers"]["other"]))
-                                    {
-                                        array_push( $question_entry["answers"]["other"]["answers"], $other);
-                                    }else
-                                    {
-                                        $question_entry["answers"]["other"] =
-                                            [
-                                                "other" => true,
-                                                "answers" => [$other]
-                                            ];
-                                    }
-
-                                }
-                            }
-
-                        }else
-                        {
-                            foreach ($result as $res)
-                            {
-                                $question_entry["answers"][$res]["content"] = $res;
-
-                                if(isset($question_entry["answers"][$res]["counter"]))
-                                {
-                                    $question_entry["answers"][$res]["counter"] += 1;
-                                }else
-                                {
-                                    $question_entry["answers"][$res]["counter"] = 1;
-                                }
-                            }
-                        }
-
-
-                    }
-
-                }else
-                {
-                    $question_entry["results"] = false;
-                }
-
-
-                foreach ($question_entry["answers"] as $answer)
-                {
-
-                    if(isset($answer["other"]))
-                    {
-                        $percent = (sizeof($answer["answers"]) / $participants_counter) * 100;
-                        $question_entry["answers"]["other"]["percent"] = $percent;
-                    }else
-                    {
-                        if(!isset($answer["answer"]))
-                        {
-                            $percent = ($answer["counter"] / $participants_counter) * 100;
-                            $question_entry["answers"][$answer["content"]]["percent"] = $percent;
-
-                        }else
-                        {
-
-                            if(!isset($answer["counter"]))
-                            {
-                                $answer_content = $answer["answer"]["answer-content"];
-                                $question_entry["answers"][$answer_content]["percent"] = 0;
-                            }else
-                            {
-                                $percent = ($answer["counter"] / $participants_counter) * 100;
-                                $answer_content = $answer["answer"]["answer-content"];
-                                $question_entry["answers"][$answer_content]["percent"] = $percent;
-                            }
-                        }
-
-                    }
-                }
-
-
-                $results[$question["position"]]["questions"][$question["id"]] = $question_entry;
-            }
 
 
             if(isset($_GET["type"]))
@@ -641,7 +237,16 @@ class AdminController extends \App\Template\Controller
                     $this->render("Admin/Results/path-tree",
                         [
                             "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
-                            "results" => $results
+                            "results" =>  get_results_by_question($this->question_repository, $this->result_repository, $this->poll_id)
+                        ]);
+                } else if ($_GET["type"] == "user-tree")
+                echo "Funktion wird gerade entwickelt!";
+                die();
+                {
+                    $this->render("Admin/Results/user-tree",
+                        [
+                            "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
+                            "results" =>  get_results_by_user($this->question_repository, $this->result_repository, $this->poll_id)
                         ]);
                 }
 
@@ -651,7 +256,7 @@ class AdminController extends \App\Template\Controller
                 $this->render("Admin/Results/path-tree",
                     [
                         "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
-                        "results" => $results
+                        "results" => get_results_by_question($this->question_repository, $this->result_repository, $this->poll_id)
                     ]);
             }
 

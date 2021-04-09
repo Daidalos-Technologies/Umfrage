@@ -58,7 +58,8 @@
         <p>Ergebnisanzeige</p>
         <div class="btn-group">
             <a href="./poll_admin?page=results&type=overview" class="btn btn-secondary">Overview</a>
-            <a href="./poll_admin?page=results&type=overview" class="btn btn-secondary active">Pfad-Baum</a>
+            <a href="./poll_admin?page=results&type=path-tree" class="btn btn-secondary active">Pfad-Baum</a>
+            <a href="./poll_admin?page=results&type=user-tree" class="btn btn-secondary">Nach Benutzern</a>
 
         </div>
     </div>
@@ -77,14 +78,16 @@
 
                             <div class="results">
                                 <?php foreach ($question["answers"] as $answer): ?>
-                                    <div class="result <?php if (isset($answer["other"])){echo "other bg-success";} ?> d-flex justify-content-center align-items-center"  <?php if (isset($answer["other"])){echo "id='{$question["question"]["id"]}'";} ?> style="width: <?php echo $answer["percent"]; ?>%">
-                                        <?php if(isset($answer["counter"])): ?>
-                                        <p><?php echo $answer["counter"]; ?></p>
-                                        <?php elseif(isset($answer["other"])): ?>
-                                            <p><?php echo sizeof($answer["answers"]); ?></p>
-                                        <?php else: ?>
-                                            <p><?php echo 0; ?></p>
-                                        <?php endif; ?>
+                                    <div class="progress <?php if (isset($answer["other"])){echo "other";} ?>" <?php if (isset($answer["other"])){echo "id='{$question["question"]["id"]}'";} ?>  style="height: 50px">
+                                        <div class="progress-bar <?php if (isset($answer["other"])){echo " bg-success";} ?>" role="progressbar" aria-valuenow="<?php echo $answer["percent"]; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $answer["percent"]; ?>%; ">
+                                            <?php if(isset($answer["counter"])): ?>
+                                                <?php echo $answer["counter"]; ?>
+                                            <?php elseif(isset($answer["other"])): ?>
+                                                <?php echo sizeof($answer["answers"]); ?>
+                                            <?php else: ?>
+                                                <?php echo 0; ?>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                     <?php if (isset($answer["other"])): ?>
 

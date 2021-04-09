@@ -80,6 +80,14 @@ class ResultRepository extends \App\Template\Repository
 
     }
 
+    public function allUsers($poll_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE poll = :poll AND finish = 1 GROUP BY user_id");
+        $stmt->execute([ "poll" => $poll_id]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
+        return $stmt->fetchAll(PDO::FETCH_CLASS);
+    }
+
     public function count ($poll_id)
     {
         $statement = $this->pdo->prepare("SELECT COUNT(DISTINCT user_id) AS anzahl FROM `$this->table_name` WHERE poll = :poll_id AND finish = 1");
