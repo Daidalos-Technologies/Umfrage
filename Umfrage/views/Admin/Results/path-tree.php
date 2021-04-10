@@ -52,6 +52,7 @@
 <body>
 
 <?php include __DIR__ . "/../../../Elements/header.php"; ?>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
 <div class="container">
 
     <div class="text-center mb-5 mt-3">
@@ -71,15 +72,20 @@
                 <?php foreach ($result["questions"] as $question): ?>
                     <div class="card question text-center ">
                         <div class="card-header <?php if($question["question"]["finish"] == 1){echo "bg-danger";} ?>">
-                            <b>Pfad <?php echo $question["question"]["path"]; ?></b>
+                            <b><?php echo $question["question"]["title"]; ?></b>
                         </div>
                         <div class="card-body" style="overflow: scroll">
-                            <h5 class="card-title"><?php echo $question["question"]["title"]; ?></h5>
 
                             <div class="results">
                                 <?php foreach ($question["answers"] as $answer): ?>
-                                    <div class="progress <?php if (isset($answer["other"])){echo "other";} ?>" <?php if (isset($answer["other"])){echo "id='{$question["question"]["id"]}'";} ?>  style="height: 50px">
-                                        <div class="progress-bar <?php if (isset($answer["other"])){echo " bg-success";} ?>" role="progressbar" aria-valuenow="<?php echo $answer["percent"]; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $answer["percent"]; ?>%; ">
+                                    <div class="progress <?php if (isset($answer["other"])){echo "other";} ?>" <?php if (isset($answer["other"])){echo "id='{$question["question"]["id"]}'";} ?>   data-bs-toggle="tooltip" data-bs-placement="top" title="  <?php if(isset($answer["counter"])): ?>
+                                                <?php echo $answer["counter"]; ?>
+                                            <?php elseif(isset($answer["other"])): ?>
+                                                <?php echo sizeof($answer["answers"]); ?>
+                                            <?php else: ?>
+                                                <?php echo 0; ?>
+                                            <?php endif; ?>"  style="height: 50px">
+                                        <div class="progress-bar <?php if (isset($answer["other"])){echo " bg-success";} ?>" role="progressbar" aria-valuenow="<?php echo $answer["percent"]; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $answer["percent"]; ?>%;  ">
                                             <?php if(isset($answer["counter"])): ?>
                                                 <?php echo $answer["counter"]; ?>
                                             <?php elseif(isset($answer["other"])): ?>

@@ -240,13 +240,24 @@ class AdminController extends \App\Template\Controller
                             "results" =>  get_results_by_question($this->question_repository, $this->result_repository, $this->poll_id)
                         ]);
                 } else if ($_GET["type"] == "user-tree")
-                echo "Funktion wird gerade entwickelt!";
-                die();
+
                 {
+                    $func_arr = get_results_by_user($this->question_repository, $this->result_repository, $this->poll_id);
+                    $questions = [];
+                    foreach ($this->question_repository->allByPoll($this->poll_id) as $question)
+                    {
+                        $questions[$question["position"]]["position"] = $question["position"];
+                        $questions[$question["position"]]["questions"][$question["id"]] = [
+                            $question
+                        ];
+                    }
+
                     $this->render("Admin/Results/user-tree",
                         [
                             "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
-                            "results" =>  get_results_by_user($this->question_repository, $this->result_repository, $this->poll_id)
+                            "results" =>  $func_arr[0],
+                            "pages" =>$func_arr[1],
+                            "questions" => $questions
                         ]);
                 }
 

@@ -18,13 +18,9 @@ function get_results_by_question($question_repository, $result_repository, $poll
 
         // Count participants
 
-        $participants_counter = 0;
+        $participants_counter = sizeof($result_repository->allUsersByQuestions($poll_id, $question["id"]));
 
-        if ($question_results) {
-            foreach ($question_results as $result_array) {
-                $participants_counter++;
-            }
-        }
+
 
         $question_entry["participants"] = $participants_counter;
 
@@ -194,49 +190,77 @@ function get_results_by_user($question_repository, $result_repository, $poll_id)
 
     // get all users
 
-    $users = [];
+        $users_db = $result_repository->allUsers($poll_id);
+        $users = [];
 
-    $results = $result_repository->allByPoll($poll_id);
-
-    foreach ($results as $result)
-    {
-        $user_id = $result["user_id"];
-
-        if(!array_search($user_id, $users))
+        foreach ($users_db as $user)
         {
-            array_push($users, $user_id);
+            array_push($users, $user["user_id"]);
         }
-    }
+
+
+
+        $results = $result_repository->allByPoll($poll_id);
+
+        foreach ($results as $result)
+        {
+            $user_id = $result["user_id"];
+
+            if(!array_search($user_id, $users))
+            {
+                array_push($users, $user_id);
+            }
+        }
+
+    $pages = sizeof($users) / 25;
+    $pages = ceil($pages);
+
 
     // create user arrays
 
     $user_data = [];
+    $user_counter = 0;
+    if(isset($_GET["site"]))
+    {
+        $min = (int)$_GET["site"] * 25 - 25;
+        $max =  (int)$_GET["site"] * 25;
 
+    }else
+    {
+      header("Location: ./poll_admin?page=results&type=user-tree&site=1");
+      die();
+    }
     foreach ($users as $user_id)
     {
-        $user_results_db = $result_repository->allByUser($user_id, $poll_id);
-
-        $user_results = [];
-
-        foreach ($user_results_db as $user_result)
+        if(($min-1) < $user_counter && $user_counter < ($max-1))
         {
-            $user_result = (array)$user_result;
-            array_push($user_results,
-            [
-                "result" => $user_result,
-                "question" => $question_repository->find(["id", $user_result["question_id"]])
-            ]);
+            $user_results_db = $result_repository->allByUser($user_id, $poll_id);
+            $user_results = [];
+
+            foreach ($user_results_db as $user_result)
+            {
+                $user_result = (array)$user_result;
+;
+                array_push($user_results,
+                    [
+                        "result" => $user_result,
+                        "question" => $user_result["question_id"]
+                    ]);
+
+            }
+
+            $user_data[$user_id] = [
+                "user_id" => $user_id,
+                "results" => $user_results
+            ];
+
         }
 
+        $user_counter++;
 
-        array_push($user_data,
-        [
-            "user_id" => $user_id,
-            "results" => $user_results
-        ]);
     }
 
-    return $user_data;
+    return [$user_data, $pages];
 
 }
 
