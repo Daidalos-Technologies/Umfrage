@@ -1,11 +1,21 @@
 <?php
-function get_results_by_question($question_repository, $result_repository, $poll_id)
+function get_results_by_question($question_repository, $result_repository, $poll_id, $filter)
 {
 
     $results = [];
     $questions = $question_repository->allByPoll($poll_id);
-    foreach ($questions as $question)
-    {
+    foreach ($questions as $question) {
+
+
+        if ($filter !== false) {
+            if (isset($filter[$question["id"]])) {
+                $check_answer = $filter[$question["id"]];
+
+                var_dump($check_answer);
+
+            }
+        }
+
 
         $results[$question["position"]]["position"] = $question["position"];
         $results[$question["position"]]["questions"][$question["id"]] = [
@@ -21,27 +31,22 @@ function get_results_by_question($question_repository, $result_repository, $poll
         $participants_counter = sizeof($result_repository->allUsersByQuestions($poll_id, $question["id"]));
 
 
-
         $question_entry["participants"] = $participants_counter;
 
         // Get question_answers
 
 
-
         $question_entry["answers"] = [];
 
-        if($question["answer_type"] != "self-filling")
-        {
+        if ($question["answer_type"] != "self-filling") {
 
             $question_answers = $question["answers"];
             $question_answers = json_decode($question_answers);
             $question_answers = (array)$question_answers;
 
-            foreach ($question_answers as $answer)
-            {
+            foreach ($question_answers as $answer) {
                 $answer = (array)$answer;
-                if($answer["type"] != "self-filling")
-                {
+                if ($answer["type"] != "self-filling") {
                     $question_entry["answers"][$answer["answer-content"]] =
                         [
                             "answer" => $answer
@@ -54,33 +59,28 @@ function get_results_by_question($question_repository, $result_repository, $poll
         }
 
 
-        if($question_results)
-        {
+        if ($question_results) {
             $question_entry["results"] = true;
 
-            foreach ($question_results as $result)
-            {
+            foreach ($question_results as $result) {
 
                 $result = (array)$result;
                 $result = explode("#", $result["answer"]);
 
-                if($question["answer_type"] != "self-filling")
-                {
+                if ($question["answer_type"] != "self-filling") {
 
-                    foreach ($result as $res)
-                    {
+                    foreach ($result as $res) {
+
+
                         $is_in = false;
 
-                        if(strlen($res) != 0){
-                            foreach ($question_entry["answers"] as $answer)
-                            {
-                                if(!isset($answer["other"])){
+                        if (strlen($res) != 0) {
+                            foreach ($question_entry["answers"] as $answer) {
+                                if (!isset($answer["other"])) {
                                     $answer_content = $answer["answer"]["answer-content"];
-                                    if($answer_content == $res)
-                                    {
+                                    if ($answer_content == $res) {
                                         $is_in = $answer;
-                                    }else
-                                    {
+                                    } else {
                                         $other = $res;
                                     }
 
@@ -90,27 +90,20 @@ function get_results_by_question($question_repository, $result_repository, $poll
                         }
 
 
-
-                        if($is_in)
-                        {
+                        if ($is_in) {
 
                             $is_in = $is_in["answer"];
 
-                            if(isset($question_entry["answers"][$is_in["answer-content"]]["counter"]))
-                            {
+                            if (isset($question_entry["answers"][$is_in["answer-content"]]["counter"])) {
                                 $question_entry["answers"][$is_in["answer-content"]]["counter"] += 1;
-                            }else
-                            {
+                            } else {
                                 $question_entry["answers"][$is_in["answer-content"]]["counter"] = 1;
                             }
-                        }else
-                        {
+                        } else {
 
-                            if(isset($question_entry["answers"]["other"]))
-                            {
-                                array_push( $question_entry["answers"]["other"]["answers"], $other);
-                            }else
-                            {
+                            if (isset($question_entry["answers"]["other"])) {
+                                array_push($question_entry["answers"]["other"]["answers"], $other);
+                            } else {
                                 $question_entry["answers"]["other"] =
                                     [
                                         "other" => true,
@@ -121,54 +114,46 @@ function get_results_by_question($question_repository, $result_repository, $poll
                         }
                     }
 
-                }else
-                {
-                    foreach ($result as $res)
-                    {
+
+                } else {
+                    foreach ($result as $res) {
+
+
                         $question_entry["answers"][$res]["content"] = $res;
 
-                        if(isset($question_entry["answers"][$res]["counter"]))
-                        {
+                        if (isset($question_entry["answers"][$res]["counter"])) {
                             $question_entry["answers"][$res]["counter"] += 1;
-                        }else
-                        {
+                        } else {
                             $question_entry["answers"][$res]["counter"] = 1;
                         }
                     }
+
                 }
 
 
             }
 
-        }else
-        {
+        } else {
             $question_entry["results"] = false;
         }
 
 
-        foreach ($question_entry["answers"] as $answer)
-        {
+        foreach ($question_entry["answers"] as $answer) {
 
-            if(isset($answer["other"]))
-            {
+            if (isset($answer["other"])) {
                 $percent = (sizeof($answer["answers"]) / $participants_counter) * 100;
                 $question_entry["answers"]["other"]["percent"] = $percent;
-            }else
-            {
-                if(!isset($answer["answer"]))
-                {
+            } else {
+                if (!isset($answer["answer"])) {
                     $percent = ($answer["counter"] / $participants_counter) * 100;
                     $question_entry["answers"][$answer["content"]]["percent"] = $percent;
 
-                }else
-                {
+                } else {
 
-                    if(!isset($answer["counter"]))
-                    {
+                    if (!isset($answer["counter"])) {
                         $answer_content = $answer["answer"]["answer-content"];
                         $question_entry["answers"][$answer_content]["percent"] = 0;
-                    }else
-                    {
+                    } else {
                         $percent = ($answer["counter"] / $participants_counter) * 100;
                         $answer_content = $answer["answer"]["answer-content"];
                         $question_entry["answers"][$answer_content]["percent"] = $percent;
@@ -190,27 +175,23 @@ function get_results_by_user($question_repository, $result_repository, $poll_id)
 
     // get all users
 
-        $users_db = $result_repository->allUsers($poll_id);
-        $users = [];
+    $users_db = $result_repository->allUsers($poll_id);
+    $users = [];
 
-        foreach ($users_db as $user)
-        {
-            array_push($users, $user["user_id"]);
+    foreach ($users_db as $user) {
+        array_push($users, $user["user_id"]);
+    }
+
+
+    $results = $result_repository->allByPoll($poll_id);
+
+    foreach ($results as $result) {
+        $user_id = $result["user_id"];
+
+        if (!array_search($user_id, $users)) {
+            array_push($users, $user_id);
         }
-
-
-
-        $results = $result_repository->allByPoll($poll_id);
-
-        foreach ($results as $result)
-        {
-            $user_id = $result["user_id"];
-
-            if(!array_search($user_id, $users))
-            {
-                array_push($users, $user_id);
-            }
-        }
+    }
 
     $pages = sizeof($users) / 25;
     $pages = ceil($pages);
@@ -220,27 +201,21 @@ function get_results_by_user($question_repository, $result_repository, $poll_id)
 
     $user_data = [];
     $user_counter = 0;
-    if(isset($_GET["site"]))
-    {
+    if (isset($_GET["site"])) {
         $min = (int)$_GET["site"] * 25 - 25;
-        $max =  (int)$_GET["site"] * 25;
+        $max = (int)$_GET["site"] * 25;
 
-    }else
-    {
-      header("Location: ./poll_admin?page=results&type=user-tree&site=1");
-      die();
+    } else {
+        header("Location: ./poll_admin?page=results&type=user-tree&site=1");
+        die();
     }
-    foreach ($users as $user_id)
-    {
-        if(($min-1) < $user_counter && $user_counter < ($max-1))
-        {
+    foreach ($users as $user_id) {
+        if (($min - 1) < $user_counter && $user_counter < ($max - 1)) {
             $user_results_db = $result_repository->allByUser($user_id, $poll_id);
             $user_results = [];
 
-            foreach ($user_results_db as $user_result)
-            {
-                $user_result = (array)$user_result;
-;
+            foreach ($user_results_db as $user_result) {
+                $user_result = (array)$user_result;;
                 array_push($user_results,
                     [
                         "result" => $user_result,
@@ -290,14 +265,12 @@ function get_results_by_user($question_repository, $result_repository, $poll_id)
     }
 }
 */
-function remove_not_started ($controller)
+function remove_not_started($controller)
 {
     $start_array = [];
 
-    foreach ($controller->question_repository->allByPoll($controller->poll_id) as $question)
-    {
-        if($question["position"] == 1)
-        {
+    foreach ($controller->question_repository->allByPoll($controller->poll_id) as $question) {
+        if ($question["position"] == 1) {
             array_push($start_array, $question["id"]);
         }
     }
@@ -305,25 +278,20 @@ function remove_not_started ($controller)
 
     $checked_users = [];
 
-    foreach ($controller->result_repository->allByPoll($controller->poll_id) as $result)
-    {
+    foreach ($controller->result_repository->allByPoll($controller->poll_id) as $result) {
 
-        if(!array_search($result["user_id"], $checked_users))
-        {
+        if (!array_search($result["user_id"], $checked_users)) {
             array_push($checked_users, $result["user_id"]);
             $is_in = false;
-            foreach ($controller->result_repository->allByUser($result["user_id"], $controller->poll_id) as $user_result)
-            {
+            foreach ($controller->result_repository->allByUser($result["user_id"], $controller->poll_id) as $user_result) {
                 $user_result = (array)$user_result;
-                if(array_search($user_result["question_id"], $start_array) !== false)
-                {
+                if (array_search($user_result["question_id"], $start_array) !== false) {
                     $is_in = true;
                 }
             }
 
-            if(!$is_in)
-            {
-                echo "update:".$result["user_id"]."<br>";
+            if (!$is_in) {
+                echo "update:" . $result["user_id"] . "<br>";
                 $controller->result_repository->updateFinishToNull($result["user_id"]);
             }
         }

@@ -17,7 +17,7 @@
                             <a class=" btn btn-danger" href="./poll_admin">Anmelden</a>
                         </li>
                     <?php endif; ?>
-                    <li class="">
+                    <li style="margin-left: 10px">
                         <a class="btn btn-primary" href="./impressum">Impressum</a>
                     </li>
                 </ul>

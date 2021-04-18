@@ -22,9 +22,10 @@
         {
             position: fixed;
             z-index: 1;
-            left: 0%;
+            left: 0;
+            right: 0;
             top: 35%;
-            width: 250px;
+
             text-align: center;
         }
 
@@ -55,7 +56,7 @@
         </div>
     </div>
 
-    <div id="user-nav">
+    <div id="user-nav" class="d-none">
         <?php $user_counter = 0; foreach ($results as $user_results): $user_counter++;?>
         <a class="btn btn-primary" href="#user-<?php echo $user_results["user_id"]; ?>"><?php echo $user_counter; ?>. Eintrag</a>
         <?php endforeach; ?>

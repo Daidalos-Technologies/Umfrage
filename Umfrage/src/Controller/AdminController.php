@@ -234,10 +234,36 @@ class AdminController extends \App\Template\Controller
                         ]);
                 }else if($_GET["type"] == "path-tree")
                 {
+
+                    if(isset($_POST["filter"]))
+                    {
+                        $filter_post = $_POST["filter"];
+
+                        $filter = [];
+
+                        foreach ($filter_post as $answer)
+                        {
+                            $answer = explode("-", $answer);
+
+                            if(isset($filter[$answer[0]]))
+                            {
+                                array_push($filter[$answer[0]], $answer[1]);
+                            }else
+                            {
+                                $filter[$answer[0]] = [$answer[1]];
+                            }
+                        }
+
+                    }else
+                    {
+                        $filter = false;
+                    }
+
                     $this->render("Admin/Results/path-tree",
                         [
                             "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
-                            "results" =>  get_results_by_question($this->question_repository, $this->result_repository, $this->poll_id)
+                            "results" =>  get_results_by_question($this->question_repository, $this->result_repository, $this->poll_id, $filter),
+                            "all_questions" => $this->question_repository->allByPoll($this->poll_id)
                         ]);
                 } else if ($_GET["type"] == "user-tree")
 
@@ -267,7 +293,8 @@ class AdminController extends \App\Template\Controller
                 $this->render("Admin/Results/path-tree",
                     [
                         "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
-                        "results" => get_results_by_question($this->question_repository, $this->result_repository, $this->poll_id)
+                        "results" => get_results_by_question($this->question_repository, $this->result_repository, $this->poll_id, []),
+                        "all_questions" => $this->question_repository->allByPoll($this->poll_id)
                     ]);
             }
 

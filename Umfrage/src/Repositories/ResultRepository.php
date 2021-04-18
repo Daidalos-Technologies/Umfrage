@@ -69,6 +69,17 @@ class ResultRepository extends \App\Template\Repository
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
         return $stmt->fetchAll(PDO::FETCH_CLASS);
 
+
+    }
+
+
+    public function allByQuestionNotFinish($question_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM `$this->table_name` WHERE question_id = :question_id");
+        $stmt->execute(["question_id" => $question_id]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->entity_path);
+        return $stmt->fetchAll(PDO::FETCH_CLASS);
+
     }
 
     public function allByUser($user_id, $poll)
@@ -87,9 +98,23 @@ class ResultRepository extends \App\Template\Repository
         return $stmt->fetchAll();
     }
 
+    public function allUsersNotFinish($poll_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT DISTINCT user_id FROM `$this->table_name` WHERE poll = :poll");
+        $stmt->execute(["poll" => $poll_id]);
+        return $stmt->fetchAll();
+    }
+
     public function allUsersByQuestions($poll_id, $question_id)
     {
         $stmt = $this->pdo->prepare("SELECT DISTINCT user_id FROM `$this->table_name` WHERE poll = :poll AND finish = 1 AND question_id = :question_id");
+        $stmt->execute(["poll" => $poll_id, "question_id" => $question_id]);
+        return $stmt->fetchAll();
+    }
+
+    public function allUsersByQuestionsNotFinish($poll_id, $question_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT DISTINCT user_id FROM `$this->table_name` WHERE poll = :poll AND question_id = :question_id");
         $stmt->execute(["poll" => $poll_id, "question_id" => $question_id]);
         return $stmt->fetchAll();
     }
