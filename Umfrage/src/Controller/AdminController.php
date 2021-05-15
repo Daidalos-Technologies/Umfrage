@@ -313,7 +313,7 @@ class AdminController extends \App\Template\Controller
                    }
 
                 }
-                var_dump($filter);
+               # var_dump($filter);
                 $this->render("Admin/Results/path-tree",
                     [
                         "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),

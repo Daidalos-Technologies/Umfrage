@@ -27,19 +27,21 @@ function get_results_by_question($question_repository, $result_repository, $poll
             foreach ($values as $value)
             {
 
+                $value = str_replace(";", "", $value);
+
                 $counter++;
                 if($counter >= sizeof($values))
                 {
-                    $injection_temp = $injection_temp."answer = $value ";
+                    $injection_temp = $injection_temp."answer = '$value' ";
                 }else
                 {
-                    $injection_temp = $injection_temp."answer = $value OR ";
+                    $injection_temp = $injection_temp."answer = '$value' OR ";
                 }
 
             }
         }
 
-        echo "<br>".$injection_temp."<br><br>";
+      #  echo "<br>".$injection_temp."<br><br>";
 
         $filter_user = $result_repository->allUsersPrepared($injection_temp);
 
@@ -56,8 +58,8 @@ function get_results_by_question($question_repository, $result_repository, $poll
                 $injection_user = $injection_user."'{$user[0]}',";
             }
 
-
         }
+
 
 
 
@@ -78,6 +80,7 @@ function get_results_by_question($question_repository, $result_repository, $poll
 
         if(!empty($filter))
         {
+
             $injection = "WHERE question_id = {$question['id']} AND finish = 1 AND user_id IN $injection_user";
            $question_results = $result_repository->allByQuestionPrepared($injection);
 
