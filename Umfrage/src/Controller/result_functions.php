@@ -4,17 +4,69 @@ function get_results_by_question($question_repository, $result_repository, $poll
 
     $results = [];
     $questions = $question_repository->allByPoll($poll_id);
-    foreach ($questions as $question) {
 
+    if(!empty($filter))
+    {
 
-        if ($filter !== false) {
-            if (isset($filter[$question["id"]])) {
-                $check_answer = $filter[$question["id"]];
+        $injection_temp = "WHERE poll = {$poll_id} AND finish = 1 AND ";
 
-                var_dump($check_answer);
+        $counter_q = 0;
+
+        foreach ($filter as $question_id => $values)
+        {
+            if($counter_q == 0)
+            {
+                $injection_temp = $injection_temp."question_id = $question_id AND ";
+            }else
+            {
+                $injection_temp = $injection_temp."OR question_id = $question_id AND ";
+            }
+
+            $counter_q++;
+            $counter = 0;
+            foreach ($values as $value)
+            {
+
+                $counter++;
+                if($counter >= sizeof($values))
+                {
+                    $injection_temp = $injection_temp."answer = $value ";
+                }else
+                {
+                    $injection_temp = $injection_temp."answer = $value OR ";
+                }
 
             }
         }
+
+        echo "<br>".$injection_temp."<br><br>";
+
+        $filter_user = $result_repository->allUsersPrepared($injection_temp);
+
+        $injection_user = "(";
+        $counter_u = 0;
+        foreach ($filter_user as $user)
+        {
+            $counter_u++;
+            if($counter_u >= sizeof($filter_user))
+            {
+                $injection_user = $injection_user."'{$user[0]}')";
+            }else
+            {
+                $injection_user = $injection_user."'{$user[0]}',";
+            }
+
+
+        }
+
+
+
+
+
+
+    }
+    foreach ($questions as $question) {
+
 
 
         $results[$question["position"]]["position"] = $question["position"];
@@ -24,11 +76,30 @@ function get_results_by_question($question_repository, $result_repository, $poll
 
         $question_entry = $results[$question["position"]]["questions"][$question["id"]];
 
-        $question_results = $result_repository->allByQuestion($question["id"]);
+        if(!empty($filter))
+        {
+            $injection = "WHERE question_id = {$question['id']} AND finish = 1 AND user_id IN $injection_user";
+           $question_results = $result_repository->allByQuestionPrepared($injection);
+
+        }else
+        {
+            $question_results = $result_repository->allByQuestion($question["id"]);
+
+        }
+
 
         // Count participants
 
-        $participants_counter = sizeof($result_repository->allUsersByQuestions($poll_id, $question["id"]));
+if(!empty($filter))
+{
+    $injection = "WHERE question_id = {$question['id']} AND finish = 1 AND user_id IN $injection_user";
+    $participants_counter = sizeof($result_repository->allUsersByQuestionsPrepared($injection));
+
+}else
+{
+    $participants_counter = sizeof($result_repository->allUsersByQuestions($poll_id, $question["id"]));
+
+}
 
 
         $question_entry["participants"] = $participants_counter;

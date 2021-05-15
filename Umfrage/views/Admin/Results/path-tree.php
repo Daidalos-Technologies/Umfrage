@@ -84,9 +84,12 @@
                     <div id="questionCollapse<?php echo $question["id"]; ?>" class="accordion-collapse collapse"
                          aria-labelledby="questionHeading<?php echo $question["id"]; ?>"
                          data-bs-parent="#filter_questions">
-                        <div class="accordion-body">
+                        <div class="accordion-body" id="<?php echo $question['id']; ?>">
                             <?php if ($question["answer_type"] == "self-filling"): ?>
-                                <input class="form-control">
+                            <div class="inp-wrapper">
+                                <input name="<?php echo $question["id"]; ?>[]" class="form-control">
+                            </div>
+                            <button type="button" class=" mt-3 add-inp btn btn-secondary">+</button>
                             <?php
                             else:
                                 $answers = $question["answers"];
@@ -98,8 +101,8 @@
 
                                     ?>
                                     <div class="form-check">
-                                        <input name="filter[]" class="form-check-input answer" type="checkbox"
-                                               value="<?php echo "{$question["id"]}-{$answer["answer-content"]};" ?>"
+                                        <input name="<?php echo $question["id"]; ?>[]" class="form-check-input answer" type="checkbox"
+                                               value="<?php echo "{$answer["answer-content"]};" ?>"
                                                id="<?php echo "{$question["id"]}-{$answer["answer-content"]}"; ?>">
                                         <label class="form-check-label"
                                                for="<?php echo "{$question["id"]}-{$answer["answer-content"]}"; ?>">
@@ -223,6 +226,14 @@
     $(".other").click(function () {
         let id = $(this).attr("id");
         $("#button-" + id).click();
+    });
+    
+    $(".add-inp").click(function () {
+        let parent = $(this).parent();
+        let id = parent.attr("id");
+
+        const inp = $("<input />").addClass("form-control mt-3").attr("name", id+"[]").appendTo($(".inp-wrapper", parent));
+
     })
 </script>
 </body>

@@ -290,10 +290,34 @@ class AdminController extends \App\Template\Controller
             }else
             {
 
+                //var_dump($_POST[58]);
+
+                $filter = [];
+
+                foreach ($_POST as $question_id => $value_arr)
+                {
+
+                    $values = [];
+
+                   foreach ($value_arr as $value)
+                   {
+                       if(!empty($value))
+                       {
+                           array_push($values, $value);
+                       }
+                   }
+
+                   if(!empty($values))
+                   {
+                       $filter[$question_id] = $values;
+                   }
+
+                }
+                var_dump($filter);
                 $this->render("Admin/Results/path-tree",
                     [
                         "poll" => $this->poll_repository->find(["id", $_SESSION["poll_admin"]]),
-                        "results" => get_results_by_question($this->question_repository, $this->result_repository, $this->poll_id, []),
+                        "results" => get_results_by_question($this->question_repository, $this->result_repository, $this->poll_id, $filter),
                         "all_questions" => $this->question_repository->allByPoll($this->poll_id)
                     ]);
             }
